@@ -1,0 +1,1167 @@
+{
+  "Poland": {
+    "Warsaw": {
+      "Q2 2023": {
+        "TotalStock": 6253779.78,
+        "Vacant": 714433.0,
+        "VacancyRate": 0.11424019155340324,
+        "TakeUp": 211165.0,
+        "NetAbsorption": -3035.969999999972,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q3 2023": {
+        "TotalStock": 6205031.78,
+        "Vacant": 657422.7100000001,
+        "VacancyRate": 0.10594993439340612,
+        "TakeUp": 303342.94000000006,
+        "NetAbsorption": 5226.320000000065,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q4 2023": {
+        "TotalStock": 6229787.78,
+        "Vacant": 646677.79,
+        "VacancyRate": 0.10380414435241003,
+        "TakeUp": 429937.0,
+        "NetAbsorption": 40727.24000000011,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q1 2024": {
+        "TotalStock": 6244851.78,
+        "Vacant": 689832.0700000001,
+        "VacancyRate": 0.11046412217649144,
+        "TakeUp": 89419.79999999999,
+        "NetAbsorption": -28090.28000000026,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q2 2024": {
+        "TotalStock": 6255651.78,
+        "Vacant": 680437.3600000001,
+        "VacancyRate": 0.10877161708000314,
+        "TakeUp": 65791.51,
+        "NetAbsorption": -7895.570000000531,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q3 2024": {
+        "TotalStock": 6264875.78,
+        "Vacant": 670682.64,
+        "VacancyRate": 0.10705441952114811,
+        "TakeUp": 130262.2700070001,
+        "NetAbsorption": 16309.149999999907,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q4 2024": {
+        "TotalStock": 6293297.779999999,
+        "Vacant": 664354.33,
+        "VacancyRate": 0.10556537338997489,
+        "TakeUp": 113382.53000010307,
+        "NetAbsorption": 45833.459999998915,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q1 2025": {
+        "TotalStock": 6277378.78,
+        "Vacant": 657718.8500000001,
+        "VacancyRate": 0.1047760336042682,
+        "TakeUp": 119711.25010000003,
+        "NetAbsorption": -9283.51999999967,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      },
+      "Q2 2025": {
+        "TotalStock": 6329316.779999999,
+        "Vacant": 682698.52,
+        "VacancyRate": 0.10786290902001591,
+        "TakeUp": 62880.23000000004,
+        "NetAbsorption": 17674.80999999994,
+        "SubMarkets": {
+          "Warsaw Central": {
+            "TotalStock": 2906127.78,
+            "Vacant": 226150.30000000002,
+            "VacancyRate": 0.07781842958054654,
+            "TakeUp": 33990.500000000015,
+            "NetAbsorption": 76818.72000000035
+          },
+          "CBD": {
+            "TotalStock": 993911.0,
+            "Vacant": 70319.95,
+            "VacancyRate": 0.07075075132481681,
+            "TakeUp": 11857.05,
+            "NetAbsorption": 12951.920000000071
+          },
+          "City Center North": {
+            "TotalStock": 239236.0,
+            "Vacant": 10918.0,
+            "VacancyRate": 0.045636944272601114,
+            "TakeUp": 2586.8199999999993,
+            "NetAbsorption": 2076.0
+          },
+          "City Center East": {
+            "TotalStock": 123969.0,
+            "Vacant": 8502.0,
+            "VacancyRate": 0.06858166154441836,
+            "TakeUp": 0.0,
+            "NetAbsorption": -475.0
+          },
+          "City Center South": {
+            "TotalStock": 308392.0,
+            "Vacant": 44400.0,
+            "VacancyRate": 0.14397260629328906,
+            "TakeUp": 5480.7699999999995,
+            "NetAbsorption": 10246.309999999998
+          },
+          "City Center West": {
+            "TotalStock": 1240619.7799999998,
+            "Vacant": 92010.35,
+            "VacancyRate": 0.0741648259066126,
+            "TakeUp": 14065.86,
+            "NetAbsorption": 52019.489999999816
+          },
+          "Warsaw Non-Central": {
+            "TotalStock": 3423189.0,
+            "Vacant": 456548.22,
+            "VacancyRate": 0.13336927058365752,
+            "TakeUp": 28889.729999999996,
+            "NetAbsorption": -59143.909999999974
+          },
+          "East": {
+            "TotalStock": 291546.0,
+            "Vacant": 27935.0,
+            "VacancyRate": 0.09581678362934151,
+            "TakeUp": 4012.0,
+            "NetAbsorption": 4618.999999999978
+          },
+          "North": {
+            "TotalStock": 126381.0,
+            "Vacant": 9453.0,
+            "VacancyRate": 0.07479763572055927,
+            "TakeUp": 0.0,
+            "NetAbsorption": -2553.0
+          },
+          "West": {
+            "TotalStock": 209067.0,
+            "Vacant": 19818.0,
+            "VacancyRate": 0.09479257845571037,
+            "TakeUp": 830.0,
+            "NetAbsorption": -9061.0
+          },
+          "Jerozolimskie Upper": {
+            "TotalStock": 264118.0,
+            "Vacant": 19604.0,
+            "VacancyRate": 0.07422439970013403,
+            "TakeUp": 893.0,
+            "NetAbsorption": -2773.6900000000023
+          },
+          "Jerozolimskie Lower": {
+            "TotalStock": 499093.0,
+            "Vacant": 67520.0,
+            "VacancyRate": 0.13528540772962153,
+            "TakeUp": 6548.94,
+            "NetAbsorption": -11649.0
+          },
+          "Żwirki i Wigury Corridor": {
+            "TotalStock": 259571.0,
+            "Vacant": 45826.630000000005,
+            "VacancyRate": 0.17654757272576677,
+            "TakeUp": 2554.0200000000004,
+            "NetAbsorption": -14171.630000000005
+          },
+          "Puławska Corridor": {
+            "TotalStock": 196949.0,
+            "Vacant": 12040.6,
+            "VacancyRate": 0.06113562394325435,
+            "TakeUp": 2201.0,
+            "NetAbsorption": -6733.600000000006
+          },
+          "Ursynów & Wilanów": {
+            "TotalStock": 123092.0,
+            "Vacant": 8952.0,
+            "VacancyRate": 0.0727260910538459,
+            "TakeUp": 411.0,
+            "NetAbsorption": -1343.0
+          },
+          "Służewiec": {
+            "TotalStock": 1059179.0,
+            "Vacant": 223921.99,
+            "VacancyRate": 0.21141090410591598,
+            "TakeUp": 10080.769999999997,
+            "NetAbsorption": -13614.98999999999
+          },
+          "Non-Służewiec Mokotów": {
+            "TotalStock": 394193.0,
+            "Vacant": 21477.0,
+            "VacancyRate": 0.05448346368403295,
+            "TakeUp": 1359.0,
+            "NetAbsorption": -1863.0
+          },
+          "Source: CBRE Research": {}
+        }
+      }
+    }
+  }
+}
