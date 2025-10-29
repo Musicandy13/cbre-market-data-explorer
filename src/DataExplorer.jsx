@@ -107,13 +107,26 @@ function buildTrendSeries(raw, country, city, submarket, metric) {
   return out;
 }
 
-/* ===== Tooltip Component ===== */
+/* ===== Tooltip Component (deduplicated) ===== */
 const MultiTooltip = ({ active, payload, label }) => {
   if (!active || !payload || !payload.length) return null;
+
+  // ✅ remove duplicates by combining same name+value
+  const unique = Array.from(
+    new Map(payload.map(p => [`${p.name}:${p.value}`, p])).values()
+  );
+
   return (
-    <div style={{ background: "white", border: "1px solid #ccc", padding: 6 }}>
+    <div
+      style={{
+        background: "white",
+        border: "1px solid #ccc",
+        padding: "6px 10px",
+        fontSize: "12px",
+      }}
+    >
       <strong>{label}</strong>
-      {payload.map((p, i) => (
+      {unique.map((p, i) => (
         <div key={i} style={{ color: p.color }}>
           {p.name}: {fmtNumber(p.value)}
         </div>
@@ -121,6 +134,7 @@ const MultiTooltip = ({ active, payload, label }) => {
     </div>
   );
 };
+
 
 /* ===== Main App ===== */
 export default function DataExplorerApp() {
@@ -556,20 +570,23 @@ if (startPeriod && endPeriod) {
       const fontSize = getDynamicFontSize(mergedData.length);
       return (
         <>
-          <XAxis
-            dataKey="period"
-            angle={0}
-            textAnchor="middle"
-            interval={0}
-            tickLine={false}
-            axisLine={{ stroke: "#ccc", strokeWidth: 1 }}
-            padding={{ left: 0, right: 0 }}
-            height={25}
-            style={{
-              fontSize: `${fontSize}px`,
-              transform: "translateY(5px)",
-            }}
-          />
+  <XAxis
+  dataKey="period"
+  interval={0}
+  tickLine={false}
+  axisLine={{ stroke: "#ccc", strokeWidth: 1 }}
+  padding={{ left: 0, right: 0 }}
+  height={80}
+  tickMargin={10}
+  tick={{
+    angle: -90,           // ✅ enforce rotation
+    textAnchor: "end",
+    fontSize: getDynamicFontSize(mergedData.length),
+    dy: 10,               // slight downward offset for alignment
+  }}
+/>
+
+
           <YAxis style={{ fontSize: `${fontSize - 1}px` }} />
           <Tooltip content={<MultiTooltip />} />
 
