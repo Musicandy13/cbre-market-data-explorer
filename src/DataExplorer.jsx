@@ -402,7 +402,7 @@ useEffect(() => {
     { key: "completionsYTD", label: "Completions ('000m²)" },
     { key: "primeYield", label: "Prime Yield - Local Convention (%)" },
     { key: "capitalValueEurSqm", label: "Capital Value (€/m²)" },
-    { key: "primeRentEurSqmMonth", label: "Prime Rent (local)" },
+    { key: "primeRentEurSqmMonth", label: "Prime Rent (€/m² pm)" },
     { key: "averageRentEurSqmMonth", label: "Average Rent (€/m² pm)" },
     { key: "serviceChargeEurSqmMonth", label: "Service Charge (€/m² pm)" },    
   ];
@@ -493,7 +493,7 @@ if (startPeriod && endPeriod) {
       {/* --- Leasing Conditions --- */}
       <div className="section-box">
         <div className="section-header">📝 Leasing Conditions</div>
-        <Row label="Prime Rent (local)" value={fmtMoney(g("primeRentEurSqmMonth"))} />
+        <Row label="Prime Rent (€/m² pm)" value={fmtMoney(g("primeRentEurSqmMonth"))} />
         <Row label="Average Rent (€/m² pm)" value={fmtMoney(g("averageRentEurSqmMonth"))} />
         <Row label="Service Charge (€/m² pm)" value={fmtMoney(g("serviceChargeEurSqmMonth"))} />
         <Row label="Typical Lease Terms (years)" value={formatMaybeRange(g("leaseLengthMonths"))} />
