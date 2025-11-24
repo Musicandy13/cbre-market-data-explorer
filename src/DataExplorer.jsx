@@ -16,23 +16,9 @@ import "./App.css";
 function fmtNumber(n) {
   if (n === null || n === undefined || n === "" || Number.isNaN(n)) return "–";
   const v = Number(n);
-  function fmtNumber(n) {
-  if (n === null || n === undefined || n === "" || Number.isNaN(n)) return "–";
-  const v = Number(n);
-  if (Math.abs(v) >= 1000) {
-    // e.g. 4,523 or 12,000 → no decimals
-    return v.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-  }
-  // e.g. 14.5 → 14.50 ; 7 → 7.00
-  return v.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}
-
+  if (Math.abs(v) >= 1000)
+    return v.toLocaleString(undefined, { maximumFractionDigits: 0 });
+  return v.toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
 function fmtMoney(n) {
