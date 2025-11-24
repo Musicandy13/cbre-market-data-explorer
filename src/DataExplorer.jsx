@@ -16,9 +16,6 @@ import "./App.css";
 function fmtNumber(n) {
   if (n === null || n === undefined || n === "" || Number.isNaN(n)) return "–";
   const v = Number(n);
-  function fmtNumber(n) {
-  if (n === null || n === undefined || n === "" || Number.isNaN(n)) return "–";
-  const v = Number(n);
 
   // ✅ Large values (>= 1000) – show as integers
   if (Math.abs(v) >= 1000) {
@@ -33,8 +30,6 @@ function fmtNumber(n) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-}
-
 }
 
 function fmtMoney(n) {
