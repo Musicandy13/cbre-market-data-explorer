@@ -16,9 +16,25 @@ import "./App.css";
 function fmtNumber(n) {
   if (n === null || n === undefined || n === "" || Number.isNaN(n)) return "–";
   const v = Number(n);
-  if (Math.abs(v) >= 1000)
-    return v.toLocaleString(undefined, { maximumFractionDigits: 0 });
-  return v.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  function fmtNumber(n) {
+  if (n === null || n === undefined || n === "" || Number.isNaN(n)) return "–";
+  const v = Number(n);
+
+  // ✅ Large values (>= 1000) – show as integers
+  if (Math.abs(v) >= 1000) {
+    return v.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  }
+
+  // ✅ Small values (< 1000) – always two decimals
+  return v.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 }
 
 function fmtMoney(n) {
