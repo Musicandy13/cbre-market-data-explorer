@@ -239,7 +239,9 @@ const [endPeriod, setEndPeriod] = useState("");
         setCity(firstCity);
         setPeriod(firstPeriod);
         setSubmarket(subs[0] || "");
-        setStartPeriod(periods[0]); // earliest
+        // Limit default view to last 20 quarters (≈5 years)
+        const last20Index = Math.max(0, periods.length - 20);
+        setStartPeriod(periods[last20Index]); // Q4 2015 in your case
         setEndPeriod(periods[periods.length - 1]); // latest
         setLoading(false);
       })
