@@ -396,12 +396,12 @@ useEffect(() => {
     metricSource[key] ?? leasingSource[key] ?? "–";
 
   const allowedMetrics = [
-    { key: "totalStock", label: "Total Stock ('000m²)" },
-    { key: "vacancy", label: "Vacancy ('000m²)" },
+    { key: "totalStock", label: "Total Stock (m²)" },
+    { key: "vacancy", label: "Vacancy (m²)" },
     { key: "vacancyRate", label: "Vacancy Rate (%)" },
-    { key: "takeUp", label: "Take-up ('000m²)" },
-    { key: "netAbsorption", label: "Net Absorption ('000m²)" },
-    { key: "completionsYTD", label: "Completions ('000m²)" },
+    { key: "takeUp", label: "Take-up (m²)" },
+    { key: "netAbsorption", label: "Net Absorption (m²)" },
+    { key: "completionsYTD", label: "Completions (m²)" },
     { key: "primeYield", label: "Prime Yield - Local Convention (%)" },
     { key: "capitalValueEurSqm", label: "Capital Value (€/m²)" },
     { key: "primeRentEurSqmMonth", label: "Prime Rent (€/m² pm)" },
@@ -485,8 +485,8 @@ if (startPeriod && endPeriod) {
       {/* --- Market Metrics --- */}
       <div className="section-box">
         <div className="section-header">📊 Market Metrics</div>
-        <Row label="Total Stock ('000m²)" value={fmtNumber(g("totalStock"))} />
-        <Row label="Vacancy ('000m²)" value={fmtNumber(g("vacancy"))} />
+        <Row label="Total Stock (m²)" value={fmtNumber(g("totalStock"))} />
+        <Row label="Vacancy (m²)" value={fmtNumber(g("vacancy"))} />
         <Row label="Vacancy Rate (%)" value={fmtPercent(g("vacancyRate"))} />
         <Row label="Prime Yield (%)" value={fmtPercent(g("primeYield"))} />
         <Row label="Capital Value (€/m²)" value={fmtMoney(g("capitalValueEurSqm"))} />
