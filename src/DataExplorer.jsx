@@ -418,7 +418,7 @@ useEffect(() => {
 
     if (avgPa != null) return avgPa / 12;
 
-    return "–";
+    return null;
   }
 
   // === AVERAGE RENT €/m² pm ===
@@ -429,11 +429,15 @@ useEffect(() => {
 
     if (avgPa != null) return avgPa / 12;
 
-    return "–";
+    return null;
   }
 
   // === DEFAULT ===
-  return metricSource[key] ?? leasingSource[key] ?? "–";
+  return (
+    coerceNumber(metricSource[key]) ??
+    coerceNumber(leasingSource[key]) ??
+    null
+  );
 };
 
 
