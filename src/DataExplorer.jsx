@@ -403,43 +403,8 @@ useEffect(() => {
   const leasingSource =
     raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.leasing || {};
 
- const g = (key) => {
-  // === PRIME RENT €/m² pm ===
-  if (key === "primeRentEurSqmMonth") {
-    const prime =
-      coerceNumber(metricSource["Prime Rent (local)"]) ??
-      coerceNumber(leasingSource["Prime Rent (local)"]);
-
-    if (prime != null) return prime;
-
-    const avgPa =
-      coerceNumber(metricSource["Average Rent (€/m² pa)"]) ??
-      coerceNumber(leasingSource["Average Rent (€/m² pa)"]);
-
-    if (avgPa != null) return avgPa / 12;
-
-    return null;
-  }
-
-  // === AVERAGE RENT €/m² pm ===
-  if (key === "averageRentEurSqmMonth") {
-    const avgPa =
-      coerceNumber(metricSource["Average Rent (€/m² pa)"]) ??
-      coerceNumber(leasingSource["Average Rent (€/m² pa)"]);
-
-    if (avgPa != null) return avgPa / 12;
-
-    return null;
-  }
-
-  // === DEFAULT ===
-  return (
-    coerceNumber(metricSource[key]) ??
-    coerceNumber(leasingSource[key]) ??
-    null
-  );
-};
-
+ const g = (key) =>
+  metricSource[key] ?? leasingSource[key] ?? "–";
 
   const allowedMetrics = [
     { key: "totalStock", label: "Total Stock (m²)" },
