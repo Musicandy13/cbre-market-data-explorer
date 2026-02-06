@@ -403,8 +403,33 @@ useEffect(() => {
   const leasingSource =
     raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.leasing || {};
 
- const g = (key) =>
-  metricSource[key] ?? leasingSource[key] ?? "–";
+ const g = (key) => {
+  // === PRIME RENT €/m² pm ===
+  if (key === "primeRentEurSqmMonth") {
+    // 1️⃣ Submarket hat Vorrang (wenn vorhanden)
+    const sub = coerceNumber(metricSource[key]);
+    if (sub != null) return sub;
+
+    // 2️⃣ Fallback: Leasing (TOTAL)
+    const total = coerceNumber(leasingSource[key]);
+    if (total != null) return total;
+
+    return "–";
+  }
+
+  // === AVERAGE RENT €/m² pm ===
+  if (key === "averageRentEurSqmMonth") {
+    // ⚠️ Average Rent EXISTIERT NUR unter leasing (TOTAL)
+    const total = coerceNumber(leasingSource[key]);
+    if (total != null) return total;
+
+    return "–";
+  }
+
+  // === DEFAULT ===
+  return metricSource[key] ?? leasingSource[key] ?? "–";
+};
+
 
   const allowedMetrics = [
     { key: "totalStock", label: "Total Stock (m²)" },
