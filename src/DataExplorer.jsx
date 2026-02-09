@@ -404,30 +404,39 @@ useEffect(() => {
     raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.leasing || {};
 
  const g = (key) => {
-  // === PRIME RENT €/m² pm ===
+  // === PRIME RENT ===
   if (key === "primeRentEurSqmMonth") {
-    // 1️⃣ Submarket first (if exists)
-    const sub = coerceNumber(metricSource?.[key]);
-    if (sub != null) return sub;
+    // 1️⃣ Prime Rent exists ONLY where explicitly provided
+    const prime =
+      coerceNumber(metricSource?.primeRentEurSqmMonth) ??
+      coerceNumber(metricSource?.primeRentLocal) ??
+      coerceNumber(leasingSource?.primeRentEurSqmMonth) ??
+      coerceNumber(leasingSource?.primeRentLocal);
 
-    // 2️⃣ Fallback: TOTAL / leasing
-    const total = coerceNumber(leasingSource?.[key]);
-    if (total != null) return total;
-
-    return "–";
+    return prime ?? "–";
   }
 
-  // === AVERAGE RENT €/m² pm ===
+  // === AVERAGE RENT ===
   if (key === "averageRentEurSqmMonth") {
-    // exists ONLY in leasing (TOTAL)
-    const total = coerceNumber(leasingSource?.[key]);
-    return total ?? "–";
+    const avg =
+      coerceNumber(leasingSource?.averageRentEurSqmMonth) ??
+      coerceNumber(leasingSource?.averageRent);
+
+    return avg ?? "–";
   }
 
-  // === EVERYTHING ELSE (incl. Service Charge – unchanged) ===
+  // === SERVICE CHARGE ===
+  if (key === "serviceChargeEurSqmMonth") {
+    const sc =
+      coerceNumber(leasingSource?.serviceChargeEurSqmMonth) ??
+      coerceNumber(leasingSource?.serviceCharge);
+
+    return sc ?? "–";
+  }
+
+  // === EVERYTHING ELSE ===
   return metricSource[key] ?? leasingSource[key] ?? "–";
 };
-
 
   const allowedMetrics = [
     { key: "totalStock", label: "Total Stock (m²)" },
