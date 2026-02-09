@@ -416,14 +416,18 @@ useEffect(() => {
     return prime ?? "–";
   }
 
-  // === AVERAGE RENT ===
-  if (key === "averageRentEurSqmMonth") {
-    const avg =
-      coerceNumber(leasingSource?.averageRentEurSqmMonth) ??
-      coerceNumber(leasingSource?.averageRent);
+  // === AVERAGE RENT €/m² pm ===
+if (key === "averageRentEurSqmMonth") {
+  // 1️⃣ Submarket first
+  const sub = coerceNumber(metricSource?.[key]);
+  if (sub != null) return sub;
 
-    return avg ?? "–";
-  }
+  // 2️⃣ Fallback: TOTAL
+  const total = coerceNumber(leasingSource?.[key]);
+  if (total != null) return total;
+
+  return "–";
+}
 
   // === SERVICE CHARGE ===
   if (key === "serviceChargeEurSqmMonth") {
