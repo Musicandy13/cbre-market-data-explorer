@@ -406,12 +406,12 @@ useEffect(() => {
  const g = (key) => {
   // === PRIME RENT €/m² pm ===
   if (key === "primeRentEurSqmMonth") {
-    // 1️⃣ Submarket hat Vorrang (wenn vorhanden)
-    const sub = coerceNumber(metricSource[key]);
+    // 1️⃣ Submarket first (if exists)
+    const sub = coerceNumber(metricSource?.[key]);
     if (sub != null) return sub;
 
-    // 2️⃣ Fallback: Leasing (TOTAL)
-    const total = coerceNumber(leasingSource[key]);
+    // 2️⃣ Fallback: TOTAL / leasing
+    const total = coerceNumber(leasingSource?.[key]);
     if (total != null) return total;
 
     return "–";
@@ -419,14 +419,12 @@ useEffect(() => {
 
   // === AVERAGE RENT €/m² pm ===
   if (key === "averageRentEurSqmMonth") {
-    // ⚠️ Average Rent EXISTIERT NUR unter leasing (TOTAL)
-    const total = coerceNumber(leasingSource[key]);
-    if (total != null) return total;
-
-    return "–";
+    // exists ONLY in leasing (TOTAL)
+    const total = coerceNumber(leasingSource?.[key]);
+    return total ?? "–";
   }
 
-  // === DEFAULT ===
+  // === EVERYTHING ELSE (incl. Service Charge – unchanged) ===
   return metricSource[key] ?? leasingSource[key] ?? "–";
 };
 
