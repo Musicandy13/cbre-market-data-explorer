@@ -153,7 +153,7 @@ export default function DataExplorerApp() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [sector] = useState("Office");
+  const [sector, setSector] = useState("Office");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [submarket, setSubmarket] = useState("");
@@ -504,8 +504,8 @@ if (startPeriod && endPeriod) {
 
       {/* --- Selection --- */}
       <div>
-        <select value={sector} disabled>
-          <option>Office</option>
+        <select value={sector} onChange={(e) => setSector(e.target.value)}>
+        <option>Office</option>
         </select>
         <select value={country} onChange={(e) => setCountry(e.target.value)}>
           {countries.map((c) => (
