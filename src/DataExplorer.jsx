@@ -254,34 +254,44 @@ const [endPeriod, setEndPeriod] = useState("");
   }, []); // Wichtig: leeres Array hier!
 
   // 2. Der Haupt-Cascading-Effekt (Sektor & Land)
+  // 1. Haupt-Kaskade: Sektor -> Land -> Stadt
   useEffect(() => {
     if (!raw || !sector) return;
+    
     const availableCountries = Object.keys(raw.countries[sector] || {});
-    if (!availableCountries.includes(country)) {
+    // Wenn das aktuelle Land nicht im neuen Sektor existiert, nimm das erste verfügbare
+    if (!country || !availableCountries.includes(country)) {
       setCountry(availableCountries[0] || "");
-      return; 
+      return; // Abbrechen, der nächste useEffect-Lauf regelt den Rest
     }
-    const cities = Object.keys(raw.countries[sector][country].cities || {});
-    if (!cities.includes(city)) {
-      const firstCity = cities[0] || "";
-      setCity(firstCity);
+
+    const availableCities = Object.keys(raw.countries[sector][country]?.cities || {});
+    if (!city || !availableCities.includes(city)) {
+      setCity(availableCities[0] || "");
     }
   }, [sector, country, raw]);
 
-  // 3. Der Stadt-Effekt
+  // 2. Detail-Kaskade: Stadt -> Periode -> Submarkt
   useEffect(() => {
-    if (!raw || !sector || !country || !city || !raw.countries[sector]?.[country]?.cities?.[city]) return;
-    const node = raw.countries[sector][country].cities[city];
-    const periods = Object.keys(node?.periods || {}).sort(comparePeriods);
-    const latest = periods[periods.length - 1] || "";
-    if (!periods.includes(period)) setPeriod(latest);
-    const subs = Object.keys(node?.periods?.[latest]?.subMarkets || {});
-    if (!subs.includes(submarket)) setSubmarket(subs[0] || "");
-  }, [city, sector, country, raw]);
+    if (!raw || !sector || !country || !city) return;
+    
+    const cityNode = raw.countries[sector]?.[country]?.cities?.[city];
+    if (!cityNode) return;
 
-// --- Default + cascading logic for comparison markets (safe version) ---
-useEffect(() => {
-  if (!raw?.countries) return;
+    const periods = Object.keys(cityNode.periods || {}).sort(comparePeriods);
+    const latest = periods[periods.length - 1] || "";
+    
+    // Setze Periode falls nicht vorhanden oder ungültig
+    if (!period || !periods.includes(period)) {
+      setPeriod(latest);
+    }
+
+    const currentPeriodNode = cityNode.periods?.[latest]; // Immer gegen 'latest' prüfen für Fallback
+    const subs = Object.keys(currentPeriodNode?.subMarkets || {});
+    if (!submarket || !subs.includes(submarket)) {
+      setSubmarket(subs[0] || "Total");
+    }
+  }, [city, country, sector, raw]);
 
   // === MARKET 2 ===
   if (showComp2) {
