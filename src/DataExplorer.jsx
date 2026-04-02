@@ -93,8 +93,9 @@ function Row({ label, value }) {
 }
 
 /* ===== Historical Series Builder ===== */
-function buildTrendSeries(raw, country, city, submarket, metric) {
-  const cityNode = raw?.countries?.[country]?.cities?.[city];
+function buildTrendSeries(raw, sector, country, city, submarket, metric) {
+  const cityNode = raw?.countries?.[sector]?.[country]?.cities?.[city];
+  // ... rest bleibt gleichc
   if (!cityNode?.periods) return [];
   const periods = Object.keys(cityNode.periods);
 
@@ -227,73 +228,56 @@ const [endPeriod, setEndPeriod] = useState("");
   const [city3, setCity3] = useState("");
   const [submarket3, setSubmarket3] = useState("");
 
+  
+  // 1. Der Fetch-Effekt (ca. Zeile 230)
   useEffect(() => {
     fetch("/market_data.json")
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
+      .then((r) => r.json())
       .then((json) => {
         setRaw(json);
-        const firstCountry = Object.keys(json.countries || {})[0];
-        const firstCity =
-          Object.keys(json.countries[firstCountry]?.cities || {})[0] || "";
-        const periods = Object.keys(
-          json.countries[firstCountry]?.cities?.[firstCity]?.periods || {}
-        );
-        const firstPeriod = periods[periods.length - 1];
-        const subs = Object.keys(
-          json.countries[firstCountry]?.cities?.[firstCity]?.periods?.[firstPeriod]
-            ?.subMarkets || {}
-        );
+        const firstSector = Object.keys(json.countries || {})[0];
+        const firstCountry = Object.keys(json.countries[firstSector] || {})[0];
+        const firstCity = Object.keys(json.countries[firstSector]?.[firstCountry]?.cities || {})[0] || "";
+        const periods = Object.keys(json.countries[firstSector]?.[firstCountry]?.cities?.[firstCity]?.periods || {}).sort(comparePeriods);
+        const latestPeriod = periods[periods.length - 1];
+        const subs = Object.keys(json.countries[firstSector]?.[firstCountry]?.cities?.[firstCity]?.periods?.[latestPeriod]?.subMarkets || {});
+
+        setSector(firstSector);
         setCountry(firstCountry);
         setCity(firstCity);
-        setPeriod(firstPeriod);
+        setPeriod(latestPeriod);
         setSubmarket(subs[0] || "");
-        // Limit default view to last 20 quarters (≈5 years)
-        const last20Index = Math.max(0, periods.length - 20);
-        setStartPeriod(periods[last20Index]); // Q4 2015 in your case
-        setEndPeriod(periods[periods.length - 1]); // latest
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
+        setStartPeriod(periods[Math.max(0, periods.length - 20)]);
+        setEndPeriod(latestPeriod);
         setLoading(false);
       });
-  }, []);
+  }, []); // Wichtig: leeres Array hier!
 
-  // --- Cascading logic for dependent dropdowns ---
-useEffect(() => {
-  if (!country || !raw?.countries?.[country]) return;
+  // 2. Der Haupt-Cascading-Effekt (Sektor & Land)
+  useEffect(() => {
+    if (!raw || !sector) return;
+    const availableCountries = Object.keys(raw.countries[sector] || {});
+    if (!availableCountries.includes(country)) {
+      setCountry(availableCountries[0] || "");
+      return; 
+    }
+    const cities = Object.keys(raw.countries[sector][country].cities || {});
+    if (!cities.includes(city)) {
+      const firstCity = cities[0] || "";
+      setCity(firstCity);
+    }
+  }, [sector, country, raw]);
 
-  const cities = Object.keys(raw.countries[country].cities || {});
-  if (!cities.includes(city)) {
-    const firstCity = cities[0] || "";
-    setCity(firstCity);
-
-    const periods = Object.keys(raw.countries[country].cities[firstCity]?.periods || {});
+  // 3. Der Stadt-Effekt
+  useEffect(() => {
+    if (!raw || !sector || !country || !city || !raw.countries[sector]?.[country]?.cities?.[city]) return;
+    const node = raw.countries[sector][country].cities[city];
+    const periods = Object.keys(node?.periods || {}).sort(comparePeriods);
     const latest = periods[periods.length - 1] || "";
-    setPeriod(latest);
-
-    const subs = Object.keys(
-      raw.countries[country].cities[firstCity]?.periods?.[latest]?.subMarkets || {}
-    );
-    setSubmarket(subs[0] || "");
-  }
-}, [country, raw]);
-
-useEffect(() => {
-  if (!city || !raw?.countries?.[country]?.cities?.[city]) return;
-
-  const periods = Object.keys(raw.countries[country].cities[city]?.periods || {});
-  const latest = periods[periods.length - 1] || "";
-  if (!periods.includes(period)) setPeriod(latest);
-
-  const subs = Object.keys(
-    raw.countries[country].cities[city]?.periods?.[latest]?.subMarkets || {}
-  );
-  if (!subs.includes(submarket)) setSubmarket(subs[0] || "");
-}, [city, country, raw]);
+    if (!periods.includes(period)) setPeriod(latest);
+    const subs = Object.keys(node?.periods?.[latest]?.subMarkets || {});
+    if (!subs.includes(submarket)) setSubmarket(subs[0] || "");
+  }, [city, sector, country, raw]);
 
 // --- Default + cascading logic for comparison markets (safe version) ---
 useEffect(() => {
@@ -301,10 +285,10 @@ useEffect(() => {
 
   // === MARKET 2 ===
   if (showComp2) {
-    const countryList = Object.keys(raw.countries);
+    const countryList = Object.keys(raw.countries[sector] || {});
     // default
     if (!country2) {
-      const defaultCountry = raw.countries["Austria"] ? "Austria" : countryList[0];
+      const defaultCountry = raw.countries[sector]?.["Austria"] ? "Austria" : countryList[0];
       setCountry2(defaultCountry);
       return;
     }
@@ -312,16 +296,14 @@ useEffect(() => {
     // ensure valid country
     if (!raw.countries[country2]) return;
 
-    const cities2 = Object.keys(raw.countries[country2].cities || {});
+    const cities2 = Object.keys(raw.countries[sector][country2]?.cities || {}); // <--- sector hinzugefügt
     if (!city2 || !cities2.includes(city2)) {
       const firstCity = cities2[0] || "";
       setCity2(firstCity);
       return;
     }
 
-    const periods2 = Object.keys(
-      raw.countries[country2].cities[city2]?.periods || {}
-    );
+    const periods2 = Object.keys(raw.countries[sector]?.[country2]?.cities[city2]?.periods || {}   );
     const latest2 = periods2[periods2.length - 1] || "";
     const subs2 = Object.keys(
       raw.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
@@ -333,10 +315,10 @@ useEffect(() => {
 
   // === MARKET 3 ===
   if (showComp3) {
-    const countryList = Object.keys(raw.countries);
+    const countryList = Object.keys(raw.countries[sector] || {});
     // default
     if (!country3) {
-      const defaultCountry = raw.countries["Austria"] ? "Austria" : countryList[0];
+      const defaultCountry = raw.countries[sector]?.["Austria"] ? "Austria" : countryList[0];
       setCountry3(defaultCountry);
       return;
     }
@@ -344,16 +326,14 @@ useEffect(() => {
     // ensure valid country
     if (!raw.countries[country3]) return;
 
-    const cities3 = Object.keys(raw.countries[country3].cities || {});
+    const cities3 = Object.keys(raw.countries[sector][country3]?.cities || {}); // <--- sector hinzugefügt
     if (!city3 || !cities3.includes(city3)) {
       const firstCity = cities3[0] || "";
       setCity3(firstCity);
       return;
     }
 
-    const periods3 = Object.keys(
-      raw.countries[country3].cities[city3]?.periods || {}
-    );
+    const periods3 = Object.keys(raw.countries[sector]?.[country3]?.cities[city3]?.periods || {});
     const latest3 = periods3[periods3.length - 1] || "";
     const subs3 = Object.keys(
       raw.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
@@ -386,22 +366,27 @@ useEffect(() => {
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
 
-  const countries = Object.keys(raw?.countries || {});
-  const cities = country ? Object.keys(raw.countries[country]?.cities || {}) : [];
-  const submarkets =
-    raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.subMarkets || {};
+  // Diese Variablen müssen den [sector] kennen!
+  const sectors = raw?.countries ? Object.keys(raw.countries) : [];
+  const countries = (raw && sector) ? Object.keys(raw.countries[sector] || {}) : [];
+  const cities = (raw && sector && country) ? Object.keys(raw.countries[sector][country]?.cities || {}) : [];
+  
+  const submarkets = (raw && sector && country && city && period) 
+    ? raw.countries[sector][country].cities[city].periods[period]?.subMarkets || {} 
+    : {};
   const submarketList = Object.keys(submarkets);
-  const periodsAsc = Object.keys(
-    raw?.countries?.[country]?.cities?.[city]?.periods || {}
-  );
+  
+  const periodsAsc = (raw && sector && country && city)
+    ? Object.keys(raw.countries[sector][country].cities[city].periods || {}).sort(comparePeriods)
+    : [];
   const periodsDesc = [...periodsAsc].reverse();
 
-  const metricSource =
-    raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.subMarkets?.[
-      submarket
-    ] || {};
-  const leasingSource =
-    raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.leasing || {};
+  const cityNode = (raw && sector && country && city && period)
+    ? raw.countries[sector][country].cities[city].periods[period]
+    : null;
+
+  const metricSource = cityNode?.subMarkets?.[submarket] || {};
+  const leasingSource = cityNode?.leasing || {};
 
  const g = (key) => {
   // === PRIME RENT ===
@@ -457,15 +442,18 @@ if (key === "averageRentEurSqmMonth") {
   ];
 
   /* === Build Chart Data === */
-  const baseSeries = buildTrendSeries(raw, country, city, submarket, selectedMetric);
-  const comp2Series =
-    showComp2 && country2 && city2 && submarket2
-      ? buildTrendSeries(raw, country2, city2, submarket2, selectedMetric)
-      : [];
-  const comp3Series =
-    showComp3 && country3 && city3 && submarket3
-      ? buildTrendSeries(raw, country3, city3, submarket3, selectedMetric)
-      : [];
+  
+const baseSeries = buildTrendSeries(raw, sector, country, city, submarket, selectedMetric);
+
+const comp2Series =
+  showComp2 && country2 && city2 && submarket2
+    ? buildTrendSeries(raw, sector, country2, city2, submarket2, selectedMetric) // 'sector' hinzugefügt
+    : [];
+
+const comp3Series =
+  showComp3 && country3 && city3 && submarket3
+    ? buildTrendSeries(raw, sector, country3, city3, submarket3, selectedMetric) // 'sector' hinzugefügt
+    : [];
 
   const periodsSet = Array.from(
     new Set([
@@ -505,13 +493,10 @@ if (startPeriod && endPeriod) {
       {/* --- Selection --- */}
       <div>
         <select value={sector} onChange={(e) => setSector(e.target.value)}>
-        <option>Office</option>
-        </select>
-        <select value={country} onChange={(e) => setCountry(e.target.value)}>
-          {countries.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
+  {sectors.map((s) => (
+    <option key={s} value={s}>{s}</option>
+  ))}
+</select>
         <select value={city} onChange={(e) => setCity(e.target.value)}>
           {cities.map((ct) => (
             <option key={ct}>{ct}</option>
@@ -679,181 +664,94 @@ if (startPeriod && endPeriod) {
   </ComposedChart>
 </ResponsiveContainer>
 
-{/* === Comparison selectors === */}
-<div style={{ marginTop: "15px" }}>
+      {/* === Comparison selectors === */}
+      <div style={{ marginTop: "15px" }}>
 
+        {/* === MARKET 2 === */}
+        {showComp2 && (
+          <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+              <strong>Market 2:</strong>
+              <button
+                onClick={() => { setShowComp2(false); setCountry2(""); setCity2(""); setSubmarket2(""); }}
+                style={{ background: "transparent", border: "none", color: "#e67e22", cursor: "pointer", fontWeight: "bold" }}
+              >
+                ✖ Remove
+              </button>
+            </div>
 
-  {/* === MARKET 2 === */}
-{showComp2 && (
-  <div
-    style={{
-      marginTop: "10px",
-      borderTop: "1px solid #ddd",
-      paddingTop: "10px",
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "6px",
-      }}
-    >
-      <strong>Market 2:</strong>
-      <button
-        onClick={() => {
-          setShowComp2(false);
-          setCountry2("");
-          setCity2("");
-          setSubmarket2("");
-        }}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#e67e22",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        ✖ Remove
-      </button>
-    </div>
+            <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+              <select value={country2} onChange={(e) => setCountry2(e.target.value)} style={{ flex: 1, padding: "6px" }}>
+                <option value="">Select country</option>
+                {countries.map((c) => <option key={c}>{c}</option>)}
+              </select>
 
-    {/* Horizontal dropdowns */}
-    <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-      <select
-        value={country2}
-        onChange={(e) => setCountry2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Select country</option>
-        {countries.map((c) => (
-          <option key={c}>{c}</option>
-        ))}
-      </select>
+              <select value={city2} onChange={(e) => setCity2(e.target.value)} style={{ flex: 1, padding: "6px" }}>
+                <option value="">Select city</option>
+                {Object.keys(raw.countries[sector]?.[country2]?.cities || {}).map((ct) => (
+                  <option key={ct} value={ct}>{ct}</option>
+                ))}
+              </select>
 
-      <select
-        value={city2}
-        onChange={(e) => setCity2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Select city</option>
-        {Object.keys(raw.countries[country2]?.cities || {}).map((ct) => (
-          <option key={ct}>{ct}</option>
-        ))}
-      </select>
+              <select value={submarket2} onChange={(e) => setSubmarket2(e.target.value)} style={{ flex: 1, padding: "6px" }}>
+                <option value="">Select submarket</option>
+                {Object.keys(raw.countries[sector]?.[country2]?.cities?.[city2]?.periods?.[period]?.subMarkets || {}).map((sm) => (
+                  <option key={sm} value={sm}>{sm}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
 
-      <select
-        value={submarket2}
-        onChange={(e) => setSubmarket2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Select submarket</option>
-        {Object.keys(
-          raw.countries[country2]?.cities?.[city2]?.periods?.[period]?.subMarkets || {}
-        ).map((sm) => (
-          <option key={sm}>{sm}</option>
-        ))}
-      </select>
-    </div>
-  </div>
-)}
+        {/* === MARKET 3 === */}
+        {showComp3 && (
+          <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+              <strong>Market 3:</strong>
+              <button
+                onClick={() => { setShowComp3(false); setCountry3(""); setCity3(""); setSubmarket3(""); }}
+                style={{ background: "transparent", border: "none", color: "#2ecc71", cursor: "pointer", fontWeight: "bold" }}
+              >
+                ✖ Remove
+              </button>
+            </div>
 
-{/* === MARKET 3 === */}
-{showComp3 && (
-  <div
-    style={{
-      marginTop: "10px",
-      borderTop: "1px solid #ddd",
-      paddingTop: "10px",
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "6px",
-      }}
-    >
-      <strong>Market 3:</strong>
-      <button
-        onClick={() => {
-          setShowComp3(false);
-          setCountry3("");
-          setCity3("");
-          setSubmarket3("");
-        }}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#2ecc71",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        ✖ Remove
-      </button>
-    </div>
+            <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+              <select value={country3} onChange={(e) => setCountry3(e.target.value)} style={{ flex: 1, padding: "6px" }}>
+                <option value="">Select country</option>
+                {countries.map((c) => <option key={c}>{c}</option>)}
+              </select>
 
-    {/* Horizontal dropdowns */}
-    <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-      <select
-        value={country3}
-        onChange={(e) => setCountry3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Select country</option>
-        {countries.map((c) => (
-          <option key={c}>{c}</option>
-        ))}
-      </select>
+              <select value={city3} onChange={(e) => setCity3(e.target.value)} style={{ flex: 1, padding: "6px" }}>
+                <option value="">Select city</option>
+                {Object.keys(raw.countries[sector]?.[country3]?.cities || {}).map((ct) => (
+                  <option key={ct} value={ct}>{ct}</option>
+                ))}
+              </select>
 
-      <select
-        value={city3}
-        onChange={(e) => setCity3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Select city</option>
-        {Object.keys(raw.countries[country3]?.cities || {}).map((ct) => (
-          <option key={ct}>{ct}</option>
-        ))}
-      </select>
+              <select value={submarket3} onChange={(e) => setSubmarket3(e.target.value)} style={{ flex: 1, padding: "6px" }}>
+                <option value="">Select submarket</option>
+                {Object.keys(raw.countries[sector]?.[country3]?.cities?.[city3]?.periods?.[period]?.subMarkets || {}).map((sm) => (
+                  <option key={sm} value={sm}>{sm}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
 
-      <select
-        value={submarket3}
-        onChange={(e) => setSubmarket3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Select submarket</option>
-        {Object.keys(
-          raw.countries[country3]?.cities?.[city3]?.periods?.[period]?.subMarkets || {}
-        ).map((sm) => (
-          <option key={sm}>{sm}</option>
-        ))}
-      </select>
-    </div>
-  </div>
-)}
+        {/* === Add comparison buttons === */}
+        <div style={{ marginTop: "10px" }}>
+          {!showComp2 && (
+            <button onClick={() => setShowComp2(true)}>+ Add 2nd Market</button>
+          )}
+          {showComp2 && !showComp3 && (
+            <button onClick={() => setShowComp3(true)}>+ Add 3rd Market</button>
+          )}
+        </div>
+      </div> 
+      {/* === END comparison block === */}
 
-
-  {/* === Add comparison buttons === */}
-  {!showComp2 && (
-    <button style={{ marginTop: "10px" }} onClick={() => setShowComp2(true)}>
-      + Add 2nd Market
-    </button>
-  )}
-  {showComp2 && !showComp3 && (
-    <button style={{ marginTop: "10px" }} onClick={() => setShowComp3(true)}>
-      + Add 3rd Market
-    </button>
-  )}
-</div>
-{/* === END comparison block === */}
-
-  </div>
-    {/* closes outer container */}
-  </div>
+    </div> // Schließt die "Historical Trend" Box
+  </div> // Schließt den äußeren Container
 );
 }
