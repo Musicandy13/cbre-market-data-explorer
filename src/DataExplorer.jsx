@@ -93,8 +93,8 @@ function Row({ label, value }) {
 }
 
 /* ===== Historical Series Builder ===== */
-function buildTrendSeries(raw, country, city, submarket, metric) {
-  const cityNode = raw?.countries?.[country]?.cities?.[city];
+function buildTrendSeries(raw, sector, country, city, submarket, metric) {
+  const cityNode = raw?.[sector]?.countries?.[country]?.cities?.[city];
   if (!cityNode?.periods) return [];
   const periods = Object.keys(cityNode.periods);
 
@@ -153,12 +153,37 @@ export default function DataExplorerApp() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [sector] = useState("Office");
+  const [sector, setSector] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [submarket, setSubmarket] = useState("");
   const [period, setPeriod] = useState("");
+  const [submarket, setSubmarket] = useState("");
   const [selectedMetric, setSelectedMetric] = useState("primeRentEurSqmMonth");
+
+  // 🔑 zentrale Ableitung (NEU – ersetzt raw.countries überall)
+const sectorData = raw?.[sector] || {};
+
+const countries = Object.keys(sectorData?.countries || {});
+
+const cities = country
+  ? Object.keys(sectorData?.countries?.[country]?.cities || {})
+  : [];
+
+const periods = city
+  ? Object.keys(
+      sectorData?.countries?.[country]?.cities?.[city]?.periods || {}
+    )
+  : [];
+
+const submarkets = city
+  ? Array.from(
+      new Set(
+        Object.values(
+          sectorData?.countries?.[country]?.cities?.[city]?.periods || {}
+        ).flatMap((p) => Object.keys(p?.subMarkets || {}))
+      )
+    )
+  : [];
 
 // 🔹 Smarter scaling — labels grow more with fewer bars
 const getDynamicFontSize = (dataLength, kind = "axis") => {
@@ -228,80 +253,108 @@ const [endPeriod, setEndPeriod] = useState("");
   const [submarket3, setSubmarket3] = useState("");
 
   useEffect(() => {
-    fetch("/market_data.json")
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((json) => {
-        setRaw(json);
-        const firstCountry = Object.keys(json.countries || {})[0];
-        const firstCity =
-          Object.keys(json.countries[firstCountry]?.cities || {})[0] || "";
-        const periods = Object.keys(
-          json.countries[firstCountry]?.cities?.[firstCity]?.periods || {}
-        );
-        const firstPeriod = periods[periods.length - 1];
-        const subs = Object.keys(
-          json.countries[firstCountry]?.cities?.[firstCity]?.periods?.[firstPeriod]
-            ?.subMarkets || {}
-        );
-        setCountry(firstCountry);
-        setCity(firstCity);
-        setPeriod(firstPeriod);
-        setSubmarket(subs[0] || "");
-        // Limit default view to last 20 quarters (≈5 years)
-        const last20Index = Math.max(0, periods.length - 20);
-        setStartPeriod(periods[last20Index]); // Q4 2015 in your case
-        setEndPeriod(periods[periods.length - 1]); // latest
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
+  fetch("/market_data.json")
+    .then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then((json) => {
+      setRaw(json);
+
+      // 🔹 1. Sector bestimmen
+      const sectors = Object.keys(json);
+      const s = sectors[0];
+
+      // 🔹 2. Country
+      const c = Object.keys(json[s]?.countries || {})[0];
+
+      // 🔹 3. City
+      const ci =
+        Object.keys(json[s]?.countries?.[c]?.cities || {})[0] || "";
+
+      // 🔹 4. Period
+      const pList = Object.keys(
+        json[s]?.countries?.[c]?.cities?.[ci]?.periods || {}
+      );
+      const p = pList[pList.length - 1];
+
+      // 🔹 5. Submarket
+      const sm = Object.keys(
+        json[s]?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+      )[0];
+
+      // 🔹 SET STATE
+      setSector(s);
+      setCountry(c);
+      setCity(ci);
+      setPeriod(p);
+      setSubmarket(sm || "");
+
+      // 🔹 Historical Range
+      const last20Index = Math.max(0, pList.length - 20);
+      setStartPeriod(pList[last20Index]);
+      setEndPeriod(pList[pList.length - 1]);
+
+      setLoading(false);
+    })
+    .catch((err) => {
+      setError(err.message);
+      setLoading(false);
+    });
+}, []);
+
 
   // --- Cascading logic for dependent dropdowns ---
 useEffect(() => {
-  if (!country || !raw?.countries?.[country]) return;
+  if (!country || !sectorData?.countries?.[country]) return;
 
-  const cities = Object.keys(raw.countries[country].cities || {});
+  const cities = Object.keys(sectorData.countries[country].cities || {});
+
   if (!cities.includes(city)) {
     const firstCity = cities[0] || "";
     setCity(firstCity);
 
-    const periods = Object.keys(raw.countries[country].cities[firstCity]?.periods || {});
+    const periods = Object.keys(
+      sectorData.countries[country].cities[firstCity]?.periods || {}
+    );
+
     const latest = periods[periods.length - 1] || "";
     setPeriod(latest);
 
     const subs = Object.keys(
-      raw.countries[country].cities[firstCity]?.periods?.[latest]?.subMarkets || {}
+      sectorData.countries[country].cities[firstCity]?.periods?.[latest]?.subMarkets || {}
     );
+
     setSubmarket(subs[0] || "");
   }
-}, [country, raw]);
+}, [country, sectorData]);
 
 useEffect(() => {
-  if (!city || !raw?.countries?.[country]?.cities?.[city]) return;
+  if (!city || !sectorData?.countries?.[country]?.cities?.[city]) return;
 
-  const periods = Object.keys(raw.countries[country].cities[city]?.periods || {});
+  const periods = Object.keys(
+    sectorData.countries[country].cities[city]?.periods || {}
+  );
+
   const latest = periods[periods.length - 1] || "";
+
   if (!periods.includes(period)) setPeriod(latest);
 
   const subs = Object.keys(
-    raw.countries[country].cities[city]?.periods?.[latest]?.subMarkets || {}
+    sectorData.countries[country].cities[city]?.periods?.[latest]?.subMarkets || {}
   );
+
   if (!subs.includes(submarket)) setSubmarket(subs[0] || "");
-}, [city, country, raw]);
+}, [city, country, sectorData]);
 
 // --- Default + cascading logic for comparison markets (safe version) ---
 useEffect(() => {
-  if (!raw?.countries) return;
+  if (sector !== "Office") return;
+  if (!sectorData?.countries) return;
 
   // === MARKET 2 ===
   if (showComp2) {
-    const countryList = Object.keys(raw.countries);
+    const countryList = Object.keys(sectorData.countries)
     // default
     if (!country2) {
       const defaultCountry = raw.countries["Austria"] ? "Austria" : countryList[0];
@@ -333,7 +386,8 @@ useEffect(() => {
 
   // === MARKET 3 ===
   if (showComp3) {
-    const countryList = Object.keys(raw.countries);
+    const countryList = Object.keys(sectorData.countries)
+  
     // default
     if (!country3) {
       const defaultCountry = raw.countries["Austria"] ? "Austria" : countryList[0];
@@ -386,22 +440,19 @@ useEffect(() => {
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
 
-  const countries = Object.keys(raw?.countries || {});
-  const cities = country ? Object.keys(raw.countries[country]?.cities || {}) : [];
-  const submarkets =
-    raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.subMarkets || {};
-  const submarketList = Object.keys(submarkets);
-  const periodsAsc = Object.keys(
-    raw?.countries?.[country]?.cities?.[city]?.periods || {}
-  );
+  
+  const submarketList = submarkets;
+  const periodsAsc = periods;
   const periodsDesc = [...periodsAsc].reverse();
+  
 
   const metricSource =
-    raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.subMarkets?.[
-      submarket
-    ] || {};
-  const leasingSource =
-    raw?.countries?.[country]?.cities?.[city]?.periods?.[period]?.leasing || {};
+  sectorData?.countries?.[country]?.cities?.[city]?.periods?.[period]?.subMarkets?.[
+    submarket
+  ] || {};
+
+const leasingSource =
+  sectorData?.countries?.[country]?.cities?.[city]?.periods?.[period]?.leasing || {};
 
  const g = (key) => {
   // === PRIME RENT €/m² pm ===
@@ -446,14 +497,14 @@ useEffect(() => {
   ];
 
   /* === Build Chart Data === */
-  const baseSeries = buildTrendSeries(raw, country, city, submarket, selectedMetric);
+  const baseSeries = buildTrendSeries(raw, sector, country, city, submarket, selectedMetric);
   const comp2Series =
     showComp2 && country2 && city2 && submarket2
-      ? buildTrendSeries(raw, country2, city2, submarket2, selectedMetric)
+      ? buildTrendSeries(raw, sector, country2, city2, submarket2, selectedMetric)
       : [];
   const comp3Series =
     showComp3 && country3 && city3 && submarket3
-      ? buildTrendSeries(raw, country3, city3, submarket3, selectedMetric)
+      ? buildTrendSeries(raw, sector, country3, city3, submarket3, selectedMetric)
       : [];
 
   const periodsSet = Array.from(
@@ -489,13 +540,15 @@ if (startPeriod && endPeriod) {
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
-      <h1>{city || "Market"} Office Market</h1>
+      <h1>  {city || "Market"} {sector}</h1>
 
       {/* --- Selection --- */}
       <div>
-        <select value={sector} disabled>
-          <option>Office</option>
-        </select>
+        <select value={sector} onChange={(e) => setSector(e.target.value)}>
+  {Object.keys(raw || {}).map((s) => (
+    <option key={s}>{s}</option>
+  ))}
+</select>
         <select value={country} onChange={(e) => setCountry(e.target.value)}>
           {countries.map((c) => (
             <option key={c}>{c}</option>
@@ -642,7 +695,7 @@ if (startPeriod && endPeriod) {
             strokeDasharray="4 3"
             dot={{ r: 2, fill: "#777" }}
           />
-          {showComp2 && (
+          {sector === "Office" && showComp2 && ( <Line ... /> )}
             <Line
               type="monotone"
               dataKey="comp2"
@@ -652,7 +705,7 @@ if (startPeriod && endPeriod) {
               dot={false}
             />
           )}
-          {showComp3 && (
+          {sector === "Office" && showComp3 && (
             <Line
               type="monotone"
               dataKey="comp3"
@@ -673,7 +726,7 @@ if (startPeriod && endPeriod) {
 
 
   {/* === MARKET 2 === */}
-{showComp2 && (
+{sector === "Office" && showComp2 && ( <Line ... /> )}
   <div
     style={{
       marginTop: "10px",
@@ -750,7 +803,7 @@ if (startPeriod && endPeriod) {
 )}
 
 {/* === MARKET 3 === */}
-{showComp3 && (
+{sector === "Office" && showComp3 && (
   <div
     style={{
       marginTop: "10px",
