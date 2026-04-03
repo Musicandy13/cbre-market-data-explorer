@@ -357,13 +357,13 @@ useEffect(() => {
     const countryList = Object.keys(sectorData.countries)
     // default
     if (!country2) {
-      const defaultCountry = raw.countries["Austria"] ? "Austria" : countryList[0];
+      const defaultCountry = sectorData.countries["Austria"] ? "Austria" : countryList[0];
       setCountry2(defaultCountry);
       return;
     }
 
     // ensure valid country
-    if (!raw.countries[country2]) return;
+    if (!sectorData.countries[country2]) return;
 
     const cities2 = Object.keys(raw.countries[country2].cities || {});
     if (!city2 || !cities2.includes(city2)) {
@@ -396,7 +396,7 @@ useEffect(() => {
     }
 
     // ensure valid country
-    if (!raw.countries[country3]) return;
+    if (!sectorData.countries[country3]) return;
 
     const cities3 = Object.keys(raw.countries[country3].cities || {});
     if (!city3 || !cities3.includes(city3)) {
@@ -695,26 +695,26 @@ if (startPeriod && endPeriod) {
             strokeDasharray="4 3"
             dot={{ r: 2, fill: "#777" }}
           />
-          {sector === "Office" && showComp2 && ( <Line ... /> )}
-            <Line
-              type="monotone"
-              dataKey="comp2"
-              stroke="#e67e22"
-              strokeWidth={1}
-              strokeDasharray="2 2"
-              dot={false}
-            />
+          {sector === "Office" && showComp2 && (
+  <Line
+    type="monotone"
+    dataKey="comp2"
+    stroke="#e67e22"
+    strokeWidth={1}
+    strokeDasharray="2 2"
+    dot={false}
+  />
           )}
           {sector === "Office" && showComp3 && (
-            <Line
-              type="monotone"
-              dataKey="comp3"
-              stroke="#2ecc71"
-              strokeWidth={1}
-              strokeDasharray="2 2"
-              dot={false}
-            />
-          )}
+  <Line
+    type="monotone"
+    dataKey="comp3"
+    stroke="#2ecc71"
+    strokeWidth={1}
+    strokeDasharray="2 2"
+    dot={false}
+  />
+)}
         </>
       );
     })()}
@@ -726,7 +726,7 @@ if (startPeriod && endPeriod) {
 
 
   {/* === MARKET 2 === */}
-{sector === "Office" && showComp2 && ( <Line ... /> )}
+  {sector === "Office" && showComp2 && (
   <div
     style={{
       marginTop: "10px",
@@ -781,9 +781,9 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select city</option>
-        {Object.keys(raw.countries[country2]?.cities || {}).map((ct) => (
-          <option key={ct}>{ct}</option>
-        ))}
+        {Object.keys(sectorData.countries[country2]?.cities || {}).map((ct) => (
+  <option key={ct}>{ct}</option>
+))}
       </select>
 
       <select
@@ -793,7 +793,7 @@ if (startPeriod && endPeriod) {
       >
         <option value="">Select submarket</option>
         {Object.keys(
-          raw.countries[country2]?.cities?.[city2]?.periods?.[period]?.subMarkets || {}
+            sectorData.countries[country2]?.cities?.[city2]?.periods?.[period]?.subMarkets || {}
         ).map((sm) => (
           <option key={sm}>{sm}</option>
         ))}
@@ -858,9 +858,9 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select city</option>
-        {Object.keys(raw.countries[country3]?.cities || {}).map((ct) => (
-          <option key={ct}>{ct}</option>
-        ))}
+        {Object.keys(sectorData.countries[country3]?.cities || {}).map((ct) => (
+  <option key={ct}>{ct}</option>
+))}
       </select>
 
       <select
@@ -870,7 +870,7 @@ if (startPeriod && endPeriod) {
       >
         <option value="">Select submarket</option>
         {Object.keys(
-          raw.countries[country3]?.cities?.[city3]?.periods?.[period]?.subMarkets || {}
+          sectorData.countries[country3]?.cities?.[city3]?.periods?.[period]?.subMarkets || {}
         ).map((sm) => (
           <option key={sm}>{sm}</option>
         ))}
