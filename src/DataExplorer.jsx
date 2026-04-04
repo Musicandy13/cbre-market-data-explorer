@@ -354,74 +354,76 @@ useEffect(() => {
   if (sector !== "Office") return;
   if (!sectorData?.countries) return;
 
-  // === MARKET 2 ===
+  const countryList = Object.keys(sectorData.countries || {});
 
   // === MARKET 2 ===
   if (showComp2) {
-    const countryList = Object.keys(sectorData.countries)
-    // default
     if (!country2) {
-      const defaultCountry = sectorData.countries["Austria"] ? "Austria" : countryList[0];
+      const defaultCountry = sectorData.countries["Austria"]
+        ? "Austria"
+        : countryList[0];
       setCountry2(defaultCountry);
-      return;
-    }
+    } else {
+      if (!sectorData.countries[country2]) return;
 
-    // ensure valid country
-    if (!sectorData.countries[country2]) return;
+      const cities2 = Object.keys(
+        sectorData.countries[country2]?.cities || {}
+      );
 
-    const cities2 = Object.keys(sectorData.countries[country3]?.cities || {});
-    if (!city2 || !cities2.includes(city2)) {
-      const firstCity = cities2[0] || "";
-      setCity2(firstCity);
-      return;
-    }
+      if (!city2 || !cities2.includes(city2)) {
+        setCity2(cities2[0] || "");
+      }
 
-    const periods2 = Object.keys(
-      sectorData.countries[country2].cities[city2]?.periods || {}
-    );
-    const latest2 = periods2[periods2.length - 1] || "";
-    const subs2 = Object.keys(
-      sectorData.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
-    );
-    if (!submarket2 || !subs2.includes(submarket2)) {
-      setSubmarket2(subs2[0] || "");
+      const periods2 = Object.keys(
+        sectorData.countries[country2].cities[city2]?.periods || {}
+      );
+      const latest2 = periods2[periods2.length - 1] || "";
+
+      const subs2 = Object.keys(
+        sectorData.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
+      );
+
+      if (!submarket2 || !subs2.includes(submarket2)) {
+        setSubmarket2(subs2[0] || "");
+      }
     }
   }
 
   // === MARKET 3 ===
-   if (showComp3) {
-    const countryList = Object.keys(sectorData.countries)
-  
-    // default
+  if (showComp3) {
     if (!country3) {
-      const defaultCountry = raw.countries["Austria"] ? "Austria" : countryList[0];
+      const defaultCountry = sectorData.countries["Austria"]
+        ? "Austria"
+        : countryList[0];
       setCountry3(defaultCountry);
-      return;
-    }
+    } else {
+      if (!sectorData.countries[country3]) return;
 
-    // ensure valid country
-    if (!sectorData.countries[country3]) return;
+      const cities3 = Object.keys(
+        sectorData.countries[country3]?.cities || {}
+      );
 
-    const cities3 = Object.keys sectorData.countries[country3].cities || {});
-    if (!city3 || !cities3.includes(city3)) {
-      const firstCity = cities3[0] || "";
-      setCity3(firstCity);
-      return;
-    }
+      if (!city3 || !cities3.includes(city3)) {
+        setCity3(cities3[0] || "");
+      }
 
-    const periods3 = Object.keys(
-      sectorData.countries[country3].cities[city3]?.periods || {}
-    );
-    const latest3 = periods3[periods3.length - 1] || "";
-    const subs3 = Object.keys(
-      sectorData.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
-    );
-    if (!submarket3 || !subs3.includes(submarket3)) {
-      setSubmarket3(subs3[0] || "");
+      const periods3 = Object.keys(
+        sectorData.countries[country3].cities[city3]?.periods || {}
+      );
+      const latest3 = periods3[periods3.length - 1] || "";
+
+      const subs3 = Object.keys(
+        sectorData.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
+      );
+
+      if (!submarket3 || !subs3.includes(submarket3)) {
+        setSubmarket3(subs3[0] || "");
+      }
     }
   }
 }, [
-  raw,
+  sector,
+  sectorData,
   showComp2,
   showComp3,
   country2,
