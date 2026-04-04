@@ -161,7 +161,7 @@ export default function DataExplorerApp() {
   const [selectedMetric, setSelectedMetric] = useState("primeRentEurSqmMonth");
 
   // 🔑 zentrale Ableitung (NEU – ersetzt raw.countries überall)
-const sectorData = raw?.[sector] || {};
+const sectorData = raw?.sectors?.[sector] || {};
 
 const countries = Object.keys(sectorData?.countries || {});
 
@@ -545,7 +545,7 @@ if (startPeriod && endPeriod) {
       {/* --- Selection --- */}
       <div>
         <select value={sector} onChange={(e) => setSector(e.target.value)}>
-  {Object.keys(raw || {}).map((s) => (
+  Object.keys(raw?.sectors || {}).map((s) => (
     <option key={s}>{s}</option>
   ))}
 </select>
