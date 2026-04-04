@@ -94,7 +94,7 @@ function Row({ label, value }) {
 
 /* ===== Historical Series Builder ===== */
 function buildTrendSeries(raw, sector, country, city, submarket, metric) {
-  const cityNode = raw?.[sector]?.countries?.[country]?.cities?.[city];
+  const cityNode = raw?.sectors?.[sector]?.countries?.[country]?.cities?.[city];
   if (!cityNode?.periods) return [];
   const periods = Object.keys(cityNode.periods);
 
@@ -367,7 +367,7 @@ useEffect(() => {
     // ensure valid country
     if (!sectorData.countries[country2]) return;
 
-    const cities2 = Object.keys(raw.countries[country2].cities || {});
+    const cities2 = Object.key ssectorData.countries[country2]].cities || {});
     if (!city2 || !cities2.includes(city2)) {
       const firstCity = cities2[0] || "";
       setCity2(firstCity);
@@ -375,11 +375,11 @@ useEffect(() => {
     }
 
     const periods2 = Object.keys(
-      raw.countries[country2].cities[city2]?.periods || {}
+      sectorData.countries[country2].cities[city2]?.periods || {}
     );
     const latest2 = periods2[periods2.length - 1] || "";
     const subs2 = Object.keys(
-      raw.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
+      sectorData.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
     );
     if (!submarket2 || !subs2.includes(submarket2)) {
       setSubmarket2(subs2[0] || "");
@@ -400,7 +400,7 @@ useEffect(() => {
     // ensure valid country
     if (!sectorData.countries[country3]) return;
 
-    const cities3 = Object.keys(raw.countries[country3].cities || {});
+    const cities3 = Object.keys sectorData.countries[country3].cities || {});
     if (!city3 || !cities3.includes(city3)) {
       const firstCity = cities3[0] || "";
       setCity3(firstCity);
@@ -408,11 +408,11 @@ useEffect(() => {
     }
 
     const periods3 = Object.keys(
-      raw.countries[country3].cities[city3]?.periods || {}
+      sectorData.countries[country3].cities[city3]?.periods || {}
     );
     const latest3 = periods3[periods3.length - 1] || "";
     const subs3 = Object.keys(
-      raw.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
+      sectorData.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
     );
     if (!submarket3 || !subs3.includes(submarket3)) {
       setSubmarket3(subs3[0] || "");
@@ -547,7 +547,7 @@ if (startPeriod && endPeriod) {
       {/* --- Selection --- */}
       <div>
         <select value={sector} onChange={(e) => setSector(e.target.value)}>
-  Object.keys(raw?.sectors || {}).map((s) => (
+  {Object.keys(raw?.sectors || {}).map((s) => (
     <option key={s}>{s}</option>
   ))}
 </select>
