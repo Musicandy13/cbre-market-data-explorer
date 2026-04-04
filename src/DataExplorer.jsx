@@ -367,7 +367,7 @@ useEffect(() => {
     // ensure valid country
     if (!sectorData.countries[country2]) return;
 
-    const cities2 = Object.key ssectorData.countries[country2]].cities || {});
+    const cities2 = const cities3 = Object.keys(sectorData.countries[country3]?.cities || {});
     if (!city2 || !cities2.includes(city2)) {
       const firstCity = cities2[0] || "";
       setCity2(firstCity);
