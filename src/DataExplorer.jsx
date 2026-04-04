@@ -781,7 +781,7 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select city</option>
-        {Object.keys(sectorData.countries[country2]?.cities || {}).map((ct) => (
+{Object.keys(sectorData.countries[country2]?.cities || {}).map((ct) => (
   <option key={ct}>{ct}</option>
 ))}
       </select>
@@ -858,7 +858,7 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select city</option>
-        {Object.keys(sectorData.countries[country3]?.cities || {}).map((ct) => (
+{Object.keys(sectorData.countries[country3]?.cities || {}).map((ct) => (
   <option key={ct}>{ct}</option>
 ))}
       </select>
