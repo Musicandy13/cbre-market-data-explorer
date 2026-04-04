@@ -259,46 +259,51 @@ const [endPeriod, setEndPeriod] = useState("");
       return r.json();
     })
     .then((json) => {
-  setRaw(json);
+      setRaw(json);
 
-  const data = json.sectors;
+      const data = json.sectors;
 
-  // 🔹 1. Sector
-  const sectors = Object.keys(data || {});
-  const s = sectors[0];
+      // 🔹 1. Sector
+      const sectors = Object.keys(data || {});
+      const s = sectors[0];
 
-  // 🔹 2. Country
-  const c = Object.keys(data[s]?.countries || {})[0];
+      // 🔹 2. Country
+      const c = Object.keys(data[s]?.countries || {})[0];
 
-  // 🔹 3. City
-  const ci =
-    Object.keys(data[s]?.countries?.[c]?.cities || {})[0] || "";
+      // 🔹 3. City
+      const ci =
+        Object.keys(data[s]?.countries?.[c]?.cities || {})[0] || "";
 
-  // 🔹 4. Period
-  const pList = Object.keys(
-    data[s]?.countries?.[c]?.cities?.[ci]?.periods || {}
-  );
-  const p = pList[pList.length - 1];
+      // 🔹 4. Period
+      const pList = Object.keys(
+        data[s]?.countries?.[c]?.cities?.[ci]?.periods || {}
+      );
+      const p = pList[pList.length - 1];
 
-  // 🔹 5. Submarket
-  const sm = Object.keys(
-    data[s]?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
-  )[0];
+      // 🔹 5. Submarket
+      const sm = Object.keys(
+        data[s]?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+      )[0];
 
-  // 🔹 SET STATE
-  setSector(s);
-  setCountry(c);
-  setCity(ci);
-  setPeriod(p);
-  setSubmarket(sm || "");
+      // 🔹 SET STATE
+      setSector(s);
+      setCountry(c);
+      setCity(ci);
+      setPeriod(p);
+      setSubmarket(sm || "");
 
-  // 🔹 Historical Range
-  const last20Index = Math.max(0, pList.length - 20);
-  setStartPeriod(pList[last20Index]);
-  setEndPeriod(pList[pList.length - 1]);
+      // 🔹 Historical Range
+      const last20Index = Math.max(0, pList.length - 20);
+      setStartPeriod(pList[last20Index]);
+      setEndPeriod(pList[pList.length - 1]);
 
-  setLoading(false);
-})
+      setLoading(false);
+    })
+    .catch((err) => {
+      setError(err.message);
+      setLoading(false);
+    });
+}, []);
 
 
   // --- Cascading logic for dependent dropdowns ---
