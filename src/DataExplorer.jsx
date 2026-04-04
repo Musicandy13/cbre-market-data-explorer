@@ -355,6 +355,8 @@ useEffect(() => {
   if (!sectorData?.countries) return;
 
   // === MARKET 2 ===
+
+  // === MARKET 2 ===
   if (showComp2) {
     const countryList = Object.keys(sectorData.countries)
     // default
@@ -367,7 +369,7 @@ useEffect(() => {
     // ensure valid country
     if (!sectorData.countries[country2]) return;
 
-    const cities2 = const cities3 = Object.keys(sectorData.countries[country3]?.cities || {});
+    const cities2 = Object.keys(sectorData.countries[country3]?.cities || {});
     if (!city2 || !cities2.includes(city2)) {
       const firstCity = cities2[0] || "";
       setCity2(firstCity);
@@ -387,7 +389,7 @@ useEffect(() => {
   }
 
   // === MARKET 3 ===
-  if (showComp3) {
+   if (showComp3) {
     const countryList = Object.keys(sectorData.countries)
   
     // default
