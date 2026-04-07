@@ -165,9 +165,8 @@ export default function DataExplorerApp() {
   // 🔑 zentrale Ableitung (NEU – ersetzt raw.countries überall)
 const sectorData = raw?.sectors?.[sector] || {};
 const sectorData2 = raw?.sectors?.[sector2 || sector] || {};
-const sectorData3 = raw?.sectors?.[sector3 || sector] || {};  
-Object.keys(sectorData2.countries || {})
-Object.keys(sectorData3.countries || {})
+const sectorData3 = raw?.sectors?.[sector3 || sector] || {}; 
+const countries = Object.keys(sectorData?.countries || {});
   
 const cities = country
   ? Object.keys(sectorData?.countries?.[country]?.cities || {})
