@@ -364,7 +364,7 @@ useEffect(() => {
 
   // === MARKET 2 ===
   if (showComp2 && sector2) {
-    if (!country2 && sector2) {
+    if (!country2 && !city2 && !submarket2) {
   const c = "Austria";
   const ci = "Vienna";
 
@@ -406,7 +406,7 @@ useEffect(() => {
 
   // === MARKET 3 ===
   if (showComp3 && sector3) {
-    if (!country3 && sector3) {
+    if (!country3 && !city3 && !submarket3) {
   const c = "Austria";
   const ci = "Vienna";
 
@@ -449,6 +449,8 @@ useEffect(() => {
   sectorData,
   showComp2,
   showComp3,
+  sector2, 
+  sector3, 
   country2,
   city2,
   submarket2,
@@ -467,7 +469,7 @@ useEffect(() => {
 
   // --- Comparison RESET LOGIC ---
 
-// Market 2
+// ===== MARKET 2 =====
 useEffect(() => {
   setCountry2("");
   setCity2("");
@@ -475,15 +477,18 @@ useEffect(() => {
 }, [sector2]);
 
 useEffect(() => {
+  if (!country2) return;
   setCity2("");
   setSubmarket2("");
 }, [country2]);
 
 useEffect(() => {
+  if (!city2) return;
   setSubmarket2("");
 }, [city2]);
 
-// Market 3
+
+// ===== MARKET 3 =====
 useEffect(() => {
   setCountry3("");
   setCity3("");
@@ -491,14 +496,15 @@ useEffect(() => {
 }, [sector3]);
 
 useEffect(() => {
+  if (!country3) return;
   setCity3("");
   setSubmarket3("");
 }, [country3]);
 
 useEffect(() => {
+  if (!city3) return;
   setSubmarket3("");
 }, [city3]);
-
 
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
