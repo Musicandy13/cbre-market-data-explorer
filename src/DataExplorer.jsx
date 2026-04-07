@@ -122,6 +122,7 @@ function buildTrendSeries(raw, sector, country, city, submarket, metric) {
   if (val !== null) out.push({ period: p, value: val });
   }
   return out;
+  }
 
 /* ===== Tooltip Component (deduplicated) ===== */
 const MultiTooltip = ({ active, payload, label }) => {
