@@ -890,3 +890,6 @@ if (startPeriod && endPeriod) {
 
 </div>
 {/* === END comparison block === */}
+        </div> 
+  );
+}   
