@@ -825,32 +825,16 @@ if (startPeriod && endPeriod) {
   
 {/* === MARKET 3 === */}
 
-  <select
-  value={sector3}
-  onChange={(e) => setSector3(e.target.value)}
-  style={{ flex: 1, padding: "6px" }}
->
-  <option value="">Sector</option>
-  {Object.keys(raw?.sectors || {}).map((s) => (
-    <option key={s}>{s}</option>
-  ))}
-</select>
-{showComp3 && (
-  <div
-    style={{
-      marginTop: "10px",
-      borderTop: "1px solid #ddd",
-      paddingTop: "10px",
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "6px",
-      }}
-    >
+  {showComp3 && (
+  <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
+    
+    {/* HEADER */}
+    <div style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "6px"
+    }}>
       <strong>Market 3:</strong>
       <button
         onClick={() => {
@@ -871,46 +855,63 @@ if (startPeriod && endPeriod) {
       </button>
     </div>
 
-    {/* Horizontal dropdowns */}
+    {/* ✅ ALL 4 DROPDOWNS IN ONE ROW */}
     <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+
+      {/* 1. ASSET CLASS */}
+      <select
+        value={sector3}
+        onChange={(e) => setSector3(e.target.value)}
+        style={{ flex: 1, padding: "6px" }}
+      >
+        <option value="">Sector</option>
+        {Object.keys(raw?.sectors || {}).map((s) => (
+          <option key={s}>{s}</option>
+        ))}
+      </select>
+
+      {/* 2. COUNTRY */}
       <select
         value={country3}
         onChange={(e) => setCountry3(e.target.value)}
         style={{ flex: 1, padding: "6px" }}
       >
-        <option value="">Select country</option>
-{Object.keys(sectorData3.countries || {}).map((c) => (
-  <option key={c}>{c}</option>
-))}
+        <option value="">Country</option>
+        {Object.keys(sectorData3.countries || {}).map((c) => (
+          <option key={c}>{c}</option>
+        ))}
       </select>
 
+      {/* 3. CITY */}
       <select
         value={city3}
         onChange={(e) => setCity3(e.target.value)}
         style={{ flex: 1, padding: "6px" }}
       >
-        <option value="">Select city</option>
-{Object.keys(sectorData3.countries[country3]?.cities || {}).map((ct) => (
-  <option key={ct}>{ct}</option>
-))}
+        <option value="">City</option>
+        {Object.keys(sectorData3.countries[country3]?.cities || {}).map((ct) => (
+          <option key={ct}>{ct}</option>
+        ))}
       </select>
 
+      {/* 4. SUBMARKET */}
       <select
         value={submarket3}
         onChange={(e) => setSubmarket3(e.target.value)}
         style={{ flex: 1, padding: "6px" }}
       >
-        <option value="">Select submarket</option>
+        <option value="">Submarket</option>
         {Object.keys(
           sectorData3.countries[country3]?.cities?.[city3]?.periods?.[
-  Object.keys(
-    sectorData3.countries[country3]?.cities?.[city3]?.periods || {}
-  ).slice(-1)[0]
-]?.subMarkets || {}
+            Object.keys(
+              sectorData3.countries[country3]?.cities?.[city3]?.periods || {}
+            ).slice(-1)[0]
+          ]?.subMarkets || {}
         ).map((sm) => (
           <option key={sm}>{sm}</option>
         ))}
       </select>
+
     </div>
   </div>
 )}
