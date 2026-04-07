@@ -778,197 +778,115 @@ if (startPeriod && endPeriod) {
   </ComposedChart>
 </ResponsiveContainer>
 
-{/* === Comparison selectors === */}
+  {/* === Comparison selectors === */}
 <div style={{ marginTop: "15px" }}>
 
-
   {/* === MARKET 2 === */}
-
   {showComp2 && (
-  <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
-    
-    {/* HEADER */}
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: "6px"
-    }}>
-      <strong>Market 2:</strong>
-      <button
-        onClick={() => {
+    <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+        <strong>Market 2:</strong>
+        <button onClick={() => {
           setShowComp2(false);
           setCountry2("");
           setCity2("");
           setSubmarket2("");
-        }}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#e67e22",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        ✖ Remove
-      </button>
+        }}>
+          ✖ Remove
+        </button>
+      </div>
+
+      <div style={{ display: "flex", gap: "10px" }}>
+        <select value={sector2} onChange={(e) => setSector2(e.target.value)}>
+          <option value="">Sector</option>
+          {Object.keys(raw?.sectors || {}).map((s) => (
+            <option key={s}>{s}</option>
+          ))}
+        </select>
+
+        <select value={country2} onChange={(e) => setCountry2(e.target.value)}>
+          <option value="">Country</option>
+          {Object.keys(sectorData2?.countries || {}).map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+
+        <select value={city2} onChange={(e) => setCity2(e.target.value)}>
+          <option value="">City</option>
+          {Object.keys(sectorData2?.countries[country2]?.cities || {}).map((ct) => (
+            <option key={ct}>{ct}</option>
+          ))}
+        </select>
+
+        <select value={submarket2} onChange={(e) => setSubmarket2(e.target.value)}>
+          <option value="">Submarket</option>
+          {Object.keys(submarkets2).map((sm) => (
+            <option key={sm}>{sm}</option>
+          ))}
+        </select>
+      </div>
     </div>
+  )}
 
-    {/* ✅ ALL 4 DROPDOWNS IN ONE ROW */}
-    <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-
-      {/* 1. ASSET CLASS */}
-      <select
-        value={sector2}
-        onChange={(e) => setSector2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Sector</option>
-        {Object.keys(raw?.sectors || {}).map((s) => (
-          <option key={s}>{s}</option>
-        ))}
-      </select>
-
-      {/* 2. COUNTRY */}
-      <select
-        value={country2}
-        onChange={(e) => setCountry2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Country</option>
-        {Object.keys(sectorData2?.countries || {}).map((c) => (
-          <option key={c}>{c}</option>
-        ))}
-      </select>
-
-      {/* 3. CITY */}
-      <select
-        value={city2}
-        onChange={(e) => setCity2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">City</option>
-        {Object.keys(sectorData2?.countries[country2]?.cities || {}).map((ct) => (
-          <option key={ct}>{ct}</option>
-        ))}
-      </select>
-
-      {/* 4. SUBMARKET */}
-
-      <select
-  value={submarket2}
-  onChange={(e) => setSubmarket2(e.target.value)}
-  style={{ flex: 1, padding: "6px" }}
->
-  <option value="">Submarket</option>
-
-  {Object.keys(submarkets2).map((sm) => (
-    <option key={sm}>{sm}</option>
-  ))}
-</select>
-  
-{/* === MARKET 3 === */}
-
+  {/* === MARKET 3 === */}
   {showComp3 && (
-  <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
-    
-    {/* HEADER */}
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: "6px"
-    }}>
-      <strong>Market 3:</strong>
-      <button
-        onClick={() => {
+    <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+        <strong>Market 3:</strong>
+        <button onClick={() => {
           setShowComp3(false);
           setCountry3("");
           setCity3("");
           setSubmarket3("");
-        }}
-        style={{
-          background: "transparent",
-          border: "none",
-          color: "#2ecc71",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        ✖ Remove
-      </button>
+        }}>
+          ✖ Remove
+        </button>
+      </div>
+
+      <div style={{ display: "flex", gap: "10px" }}>
+        <select value={sector3} onChange={(e) => setSector3(e.target.value)}>
+          <option value="">Sector</option>
+          {Object.keys(raw?.sectors || {}).map((s) => (
+            <option key={s}>{s}</option>
+          ))}
+        </select>
+
+        <select value={country3} onChange={(e) => setCountry3(e.target.value)}>
+          <option value="">Country</option>
+          {Object.keys(sectorData3?.countries || {}).map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+
+        <select value={city3} onChange={(e) => setCity3(e.target.value)}>
+          <option value="">City</option>
+          {Object.keys(sectorData3?.countries[country3]?.cities || {}).map((ct) => (
+            <option key={ct}>{ct}</option>
+          ))}
+        </select>
+
+        <select value={submarket3} onChange={(e) => setSubmarket3(e.target.value)}>
+          <option value="">Submarket</option>
+          {Object.keys(submarkets3).map((sm) => (
+            <option key={sm}>{sm}</option>
+          ))}
+        </select>
+      </div>
     </div>
+  )}
 
-    {/* ✅ ALL 4 DROPDOWNS IN ONE ROW */}
-    <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-
-      {/* 1. ASSET CLASS */}
-      <select
-        value={sector3}
-        onChange={(e) => setSector3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Sector</option>
-        {Object.keys(raw?.sectors || {}).map((s) => (
-          <option key={s}>{s}</option>
-        ))}
-      </select>
-
-      {/* 2. COUNTRY */}
-      <select
-        value={country3}
-        onChange={(e) => setCountry3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Country</option>
-        {Object.keys(sectorData3?.countries || {}).map((c) => (
-          <option key={c}>{c}</option>
-        ))}
-      </select>
-
-      {/* 3. CITY */}
-      <select
-        value={city3}
-        onChange={(e) => setCity3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">City</option>
-        {Object.keys(sectorData3?.countries[country3]?.cities || {}).map((ct) => (
-          <option key={ct}>{ct}</option>
-        ))}
-      </select>
-
-      {/* 4. SUBMARKET */}
-
-      <select
-  value={submarket3}
-  onChange={(e) => setSubmarket3(e.target.value)}
-  style={{ flex: 1, padding: "6px" }}
->
-  <option value="">Submarket</option>
-
-  {Object.keys(submarkets3).map((sm) => (
-    <option key={sm}>{sm}</option>
-  ))}
-</select>
-
-
-  {/* === Add comparison buttons === */}
+  {/* === ✅ BUTTONS (RICHTIG PLATZIERT) === */}
   {!showComp2 && (
     <button style={{ marginTop: "10px" }} onClick={() => setShowComp2(true)}>
       + Add 2nd Market
     </button>
   )}
+
   {showComp2 && !showComp3 && (
     <button style={{ marginTop: "10px" }} onClick={() => setShowComp3(true)}>
       + Add 3rd Market
     </button>
   )}
+
 </div>
 {/* === END comparison block === */}
-
-  </div>
-    {/* closes outer container */}
-  </div>
-);
-}
