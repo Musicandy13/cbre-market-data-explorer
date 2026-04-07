@@ -891,8 +891,8 @@ if (startPeriod && endPeriod) {
 </div>
 {/* === END comparison block === */}
 
-</div>   {/* ❗ NEU – schließt section-box */}
+</div>   
 
-</div>   {/* root div */}
+</div>  
   );
 }
