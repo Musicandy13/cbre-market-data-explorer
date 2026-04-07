@@ -362,8 +362,6 @@ useEffect(() => {
 useEffect(() => {
   if (!raw?.sectors) return;
 
-  const countryList = Object.keys(sectorData.countries || {});
-
   // === MARKET 2 ===
   if (showComp2 && sector2) {
     if (!country2 && sector2) {
@@ -829,21 +827,20 @@ if (startPeriod && endPeriod) {
 
       <div style={{ display: "flex", gap: "10px" }}>
         <select value={sector2} onChange={(e) => setSector2(e.target.value)}>
-  <option value="">Sector</option>
   {Object.keys(raw?.sectors || {}).map((s) => (
     <option key={s} value={s}>{s}</option>
   ))}
 </select>
 
         <select value={country2} onChange={(e) => setCountry2(e.target.value)}>
-  <option value="">Country</option>
+  
   {Object.keys(sectorData2?.countries || {}).map((c) => (
     <option key={c} value={c}>{c}</option>
   ))}
 </select>
 
         <select value={city2} onChange={(e) => setCity2(e.target.value)}>
-  <option value="">City</option>
+  
   {country2 &&
     Object.keys(sectorData2?.countries?.[country2]?.cities || {}).map((ct) => (
       <option key={ct} value={ct}>{ct}</option>
@@ -851,7 +848,7 @@ if (startPeriod && endPeriod) {
 </select>
 
         <select value={submarket2} onChange={(e) => setSubmarket2(e.target.value)}>
-          <option value="">Submarket</option>
+          
           {Object.keys(submarkets2).map((sm) => (
             <option key={sm}>{sm}</option>
           ))}
@@ -877,21 +874,20 @@ if (startPeriod && endPeriod) {
 
       <div style={{ display: "flex", gap: "10px" }}>
         <select value={sector3} onChange={(e) => setSector3(e.target.value)}>
-  <option value="">Sector</option>
   {Object.keys(raw?.sectors || {}).map((s) => (
     <option key={s} value={s}>{s}</option>
   ))}
 </select>
 
         <select value={country3} onChange={(e) => setCountry3(e.target.value)}>
-  <option value="">Country</option>
+  
   {Object.keys(sectorData3?.countries || {}).map((c) => (
     <option key={c} value={c}>{c}</option>
   ))}
 </select>
 
         <select value={city3} onChange={(e) => setCity3(e.target.value)}>
-  <option value="">City</option>
+  
   {country3 &&
   Object.keys(sectorData3?.countries?.[country3]?.cities || {}).map((ct) => (
     <option key={ct} value={ct}>{ct}</option>
@@ -899,7 +895,7 @@ if (startPeriod && endPeriod) {
 </select>
 
         <select value={submarket3} onChange={(e) => setSubmarket3(e.target.value)}>
-          <option value="">Submarket</option>
+        
           {Object.keys(submarkets3).map((sm) => (
             <option key={sm}>{sm}</option>
           ))}
@@ -910,13 +906,19 @@ if (startPeriod && endPeriod) {
 
   {/* === ✅ BUTTONS (RICHTIG PLATZIERT) === */}
   {!showComp2 && (
-    <button style={{ marginTop: "10px" }} onClick={() => setShowComp2(true)}>
+    <button style={{ marginTop: "10px" }} onClick={() => {
+  setShowComp2(true);
+  setSector2("Office"); 
+}}>
       + Add 2nd Market
     </button>
   )}
 
   {showComp2 && !showComp3 && (
-    <button style={{ marginTop: "10px" }} onClick={() => setShowComp3(true)}>
+    <button style={{ marginTop: "10px" }} onClick={() => {
+  setShowComp3(true);
+  setSector3("Office");
+}}>
       + Add 3rd Market
     </button>
   )}
