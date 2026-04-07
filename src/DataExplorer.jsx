@@ -159,12 +159,16 @@ export default function DataExplorerApp() {
   const [period, setPeriod] = useState("");
   const [submarket, setSubmarket] = useState("");
   const [selectedMetric, setSelectedMetric] = useState("primeRentEurSqmMonth");
+  const [sector2, setSector2] = useState("");
+  const [sector3, setSector3] = useState("");
 
   // 🔑 zentrale Ableitung (NEU – ersetzt raw.countries überall)
 const sectorData = raw?.sectors?.[sector] || {};
-
-const countries = Object.keys(sectorData?.countries || {});
-
+const sectorData2 = raw?.sectors?.[sector2 || sector] || {};
+const sectorData3 = raw?.sectors?.[sector3 || sector] || {};  
+Object.keys(sectorData2.countries || {})
+Object.keys(sectorData3.countries || {})
+  
 const cities = country
   ? Object.keys(sectorData?.countries?.[country]?.cities || {})
   : [];
@@ -351,7 +355,6 @@ useEffect(() => {
 
 // --- Default + cascading logic for comparison markets (safe version) ---
 useEffect(() => {
-  if (sector !== "Office") return;
   if (!sectorData?.countries) return;
 
   const countryList = Object.keys(sectorData.countries || {});
@@ -359,15 +362,15 @@ useEffect(() => {
   // === MARKET 2 ===
   if (showComp2) {
     if (!country2) {
-      const defaultCountry = sectorData.countries["Austria"]
-        ? "Austria"
-        : countryList[0];
+      const defaultCountry = sectorData2.countries["Austria"]
+  ? "Austria"
+  : Object.keys(sectorData2.countries)[0];
       setCountry2(defaultCountry);
     } else {
-      if (!sectorData.countries[country2]) return;
+      if (!sectorData2.countries[country2]) return;
 
       const cities2 = Object.keys(
-        sectorData.countries[country2]?.cities || {}
+        sectorData2.countries[country2]?.cities || {}
       );
 
       if (!city2 || !cities2.includes(city2)) {
@@ -375,12 +378,12 @@ useEffect(() => {
       }
 
       const periods2 = Object.keys(
-        sectorData.countries[country2].cities[city2]?.periods || {}
+        sectorData2.countries[country2].cities[city2]?.periods || {}
       );
       const latest2 = periods2[periods2.length - 1] || "";
 
       const subs2 = Object.keys(
-        sectorData.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
+        sectorData2.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
       );
 
       if (!submarket2 || !subs2.includes(submarket2)) {
@@ -392,28 +395,27 @@ useEffect(() => {
   // === MARKET 3 ===
   if (showComp3) {
     if (!country3) {
-      const defaultCountry = sectorData.countries["Austria"]
-        ? "Austria"
-        : countryList[0];
+      const defaultCountry = sectorData3.countries["Austria"]
+  ? "Austria"
+  : Object.keys(sectorData3.countries)[0];
       setCountry3(defaultCountry);
     } else {
-      if (!sectorData.countries[country3]) return;
+      if (!sectorData3.countries[country3]) return;
 
       const cities3 = Object.keys(
-        sectorData.countries[country3]?.cities || {}
-      );
+        sectorData3.countries[country3]?.cities || {}      );
 
       if (!city3 || !cities3.includes(city3)) {
         setCity3(cities3[0] || "");
       }
 
       const periods3 = Object.keys(
-        sectorData.countries[country3].cities[city3]?.periods || {}
+        sectorData3.countries[country3].cities[city3]?.periods || {}
       );
       const latest3 = periods3[periods3.length - 1] || "";
 
       const subs3 = Object.keys(
-        sectorData.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
+        sectorData3.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
       );
 
       if (!submarket3 || !subs3.includes(submarket3)) {
@@ -506,11 +508,11 @@ const leasingSource =
   const baseSeries = buildTrendSeries(raw, sector, country, city, submarket, selectedMetric);
   const comp2Series =
     showComp2 && country2 && city2 && submarket2
-      ? buildTrendSeries(raw, sector, country2, city2, submarket2, selectedMetric)
+      ? buildTrendSeries(raw, sector2 || sector, country2, city2, submarket2, selectedMetric)
       : [];
   const comp3Series =
     showComp3 && country3 && city3 && submarket3
-      ? buildTrendSeries(raw, sector, country3, city3, submarket3, selectedMetric)
+      ? buildTrendSeries(raw, sector3 || sector, country3, city3, submarket3, selectedMetric)
       : [];
 
   const periodsSet = Array.from(
@@ -542,8 +544,6 @@ if (startPeriod && endPeriod) {
       comparePeriods(d.period, endPeriod) <= 0
   );
 }
-
-
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
       <h1>  {city || "Market"} {sector}</h1>
@@ -701,7 +701,7 @@ if (startPeriod && endPeriod) {
             strokeDasharray="4 3"
             dot={{ r: 2, fill: "#777" }}
           />
-          {sector === "Office" && showComp2 && (
+          {showComp2 && (
   <Line
     type="monotone"
     dataKey="comp2"
@@ -711,7 +711,7 @@ if (startPeriod && endPeriod) {
     dot={false}
   />
           )}
-          {sector === "Office" && showComp3 && (
+          {showComp3 && (
   <Line
     type="monotone"
     dataKey="comp3"
@@ -732,7 +732,18 @@ if (startPeriod && endPeriod) {
 
 
   {/* === MARKET 2 === */}
-  {sector === "Office" && showComp2 && (
+
+  <select
+  value={sector2}
+  onChange={(e) => setSector2(e.target.value)}
+  style={{ flex: 1, padding: "6px" }}
+>
+  <option value="">Sector</option>
+  {Object.keys(raw?.sectors || {}).map((s) => (
+    <option key={s}>{s}</option>
+  ))}
+</select>
+  {showComp2 && (
   <div
     style={{
       marginTop: "10px",
@@ -776,9 +787,9 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select country</option>
-        {countries.map((c) => (
-          <option key={c}>{c}</option>
-        ))}
+{Object.keys(sectorData2.countries || {}).map((c) => (
+  <option key={c}>{c}</option>
+))}
       </select>
 
       <select
@@ -787,7 +798,7 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select city</option>
-{Object.keys(sectorData.countries[country2]?.cities || {}).map((ct) => (
+{Object.keys(sectorData2.countries[country2]?.cities || {}).map((ct) => (
   <option key={ct}>{ct}</option>
 ))}
       </select>
@@ -799,7 +810,11 @@ if (startPeriod && endPeriod) {
       >
         <option value="">Select submarket</option>
         {Object.keys(
-            sectorData.countries[country2]?.cities?.[city2]?.periods?.[period]?.subMarkets || {}
+            sectorData2.countries[country2]?.cities?.[city2]?.periods?.[
+  Object.keys(
+    sectorData2.countries[country2]?.cities?.[city2]?.periods || {}
+  ).slice(-1)[0]
+]?.subMarkets || {}
         ).map((sm) => (
           <option key={sm}>{sm}</option>
         ))}
@@ -809,7 +824,18 @@ if (startPeriod && endPeriod) {
 )}
 
 {/* === MARKET 3 === */}
-{sector === "Office" && showComp3 && (
+
+  <select
+  value={sector3}
+  onChange={(e) => setSector3(e.target.value)}
+  style={{ flex: 1, padding: "6px" }}
+>
+  <option value="">Sector</option>
+  {Object.keys(raw?.sectors || {}).map((s) => (
+    <option key={s}>{s}</option>
+  ))}
+</select>
+{showComp3 && (
   <div
     style={{
       marginTop: "10px",
@@ -853,9 +879,9 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select country</option>
-        {countries.map((c) => (
-          <option key={c}>{c}</option>
-        ))}
+{Object.keys(sectorData3.countries || {}).map((c) => (
+  <option key={c}>{c}</option>
+))}
       </select>
 
       <select
@@ -864,7 +890,7 @@ if (startPeriod && endPeriod) {
         style={{ flex: 1, padding: "6px" }}
       >
         <option value="">Select city</option>
-{Object.keys(sectorData.countries[country3]?.cities || {}).map((ct) => (
+{Object.keys(sectorData3.countries[country3]?.cities || {}).map((ct) => (
   <option key={ct}>{ct}</option>
 ))}
       </select>
@@ -876,7 +902,11 @@ if (startPeriod && endPeriod) {
       >
         <option value="">Select submarket</option>
         {Object.keys(
-          sectorData.countries[country3]?.cities?.[city3]?.periods?.[period]?.subMarkets || {}
+          sectorData3.countries[country3]?.cities?.[city3]?.periods?.[
+  Object.keys(
+    sectorData3.countries[country3]?.cities?.[city3]?.periods || {}
+  ).slice(-1)[0]
+]?.subMarkets || {}
         ).map((sm) => (
           <option key={sm}>{sm}</option>
         ))}
