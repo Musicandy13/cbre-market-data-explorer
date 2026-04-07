@@ -94,7 +94,7 @@ function Row({ label, value }) {
 
 /* ===== Historical Series Builder ===== */
 function buildTrendSeries(raw, sector, country, city, submarket, metric) {
-  const cityNode = raw?.sectors?.[sector]?.countries?.[country]?.cities?.[city];
+  const cityNode = raw?.sectors?.[sector]?.countries?.[country]?.cities?.[city] || {};
   if (!cityNode?.periods) return [];
   const periods = Object.keys(cityNode.periods);
 
@@ -107,16 +107,21 @@ function buildTrendSeries(raw, sector, country, city, submarket, metric) {
 
   const out = [];
   for (const p of periods.sort(sortPeriods)) {
-    const cityData = cityNode.periods?.[p];
-    if (!cityData) continue;
-    const subData = cityData?.subMarkets?.[submarket] || {};
-    const leasing = cityData?.leasing || {};
-    const merged = { ...leasing, ...subData };
-    const val = coerceNumber(merged?.[metric]);
-    if (val !== null) out.push({ period: p, value: val });
+  const cityData = cityNode?.periods?.[p];
+  if (!cityData) continue;
+
+  const subData = submarket
+    ? (cityData?.subMarkets?.[submarket] || {})
+    : {};
+
+  const leasing = cityData?.leasing || {};
+
+  const merged = { ...(leasing || {}), ...(subData || {}) };
+
+  const val = coerceNumber(merged?.[metric]);
+  if (val !== null) out.push({ period: p, value: val });
   }
   return out;
-}
 
 /* ===== Tooltip Component (deduplicated) ===== */
 const MultiTooltip = ({ active, payload, label }) => {
@@ -370,7 +375,7 @@ useEffect(() => {
       if (!sectorData2?.countries[country2]) return;
 
       const cities2 = Object.keys(
-        sectorData2?.countries[country2]?.cities || {}
+        sectorData2?.countries?.[country2]?.cities || {}
       );
 
       if (!city2 || !cities2.includes(city2)) {
@@ -378,13 +383,13 @@ useEffect(() => {
       }
 
       const periods2 = Object.keys(
-        sectorData2?.countries[country2].cities[city2]?.periods || {}
+        sectorData2?.countries?.[country2]?.cities?.[city2]?.periods || {}
       );
       const latest2 = periods2[periods2.length - 1] || "";
 
       const subs2 = Object.keys(
-        sectorData2?.countries[country2].cities[city2]?.periods?.[latest2]?.subMarkets || {}
-      );
+  sectorData2?.countries?.[country2]?.cities?.[city2]?.periods?.[latest2]?.subMarkets || {}
+);
 
       if (!submarket2 || !subs2.includes(submarket2)) {
         setSubmarket2(subs2[0] || "");
@@ -415,8 +420,8 @@ useEffect(() => {
       const latest3 = periods3[periods3.length - 1] || "";
 
       const subs3 = Object.keys(
-        sectorData3?.countries[country3].cities[city3]?.periods?.[latest3]?.subMarkets || {}
-      );
+  sectorData3?.countries?.[country3]?.cities?.[city3]?.periods?.[latest3]?.subMarkets || {}
+);
 
       if (!submarket3 || !subs3.includes(submarket3)) {
         setSubmarket3(subs3[0] || "");
@@ -488,20 +493,28 @@ useEffect(() => {
   const periodsDesc = [...periodsAsc].reverse();
   // === SAFE SUBMARKETS MARKET 2 ===
 const periodsObj2 =
-  sectorData2?.countries?.[country2]?.cities?.[city2]?.periods || {};
+  country2 && city2
+    ? (sectorData2?.countries?.[country2]?.cities?.[city2]?.periods || {})
+    : {};
 
 const latestPeriod2 = Object.keys(periodsObj2).slice(-1)[0];
 
 const submarkets2 =
-  periodsObj2?.[latestPeriod2]?.subMarkets || {};
+  latestPeriod2 && periodsObj2?.[latestPeriod2]?.subMarkets
+    ? periodsObj2[latestPeriod2].subMarkets
+    : {};
 
   const periodsObj3 =
-  sectorData3?.countries?.[country3]?.cities?.[city3]?.periods || {};
+  country3 && city3
+    ? (sectorData3?.countries?.[country3]?.cities?.[city3]?.periods || {})
+    : {};
 
 const latestPeriod3 = Object.keys(periodsObj3).slice(-1)[0];
 
 const submarkets3 =
-  periodsObj3?.[latestPeriod3]?.subMarkets || {};
+  latestPeriod3 && periodsObj3?.[latestPeriod3]?.subMarkets
+    ? periodsObj3[latestPeriod3].subMarkets
+    : {};
   
 
   const metricSource =
@@ -798,25 +811,26 @@ if (startPeriod && endPeriod) {
 
       <div style={{ display: "flex", gap: "10px" }}>
         <select value={sector2} onChange={(e) => setSector2(e.target.value)}>
-          <option value="">Sector</option>
-          {Object.keys(raw?.sectors || {}).map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
+  <option value="">Sector</option>
+  {Object.keys(raw?.sectors || {}).map((s) => (
+    <option key={s} value={s}>{s}</option>
+  ))}
+</select>
 
         <select value={country2} onChange={(e) => setCountry2(e.target.value)}>
-          <option value="">Country</option>
-          {Object.keys(sectorData2?.countries || {}).map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
+  <option value="">Country</option>
+  {Object.keys(sectorData2?.countries || {}).map((c) => (
+    <option key={c} value={c}>{c}</option>
+  ))}
+</select>
 
         <select value={city2} onChange={(e) => setCity2(e.target.value)}>
-          <option value="">City</option>
-          {Object.keys(sectorData2?.countries[country2]?.cities || {}).map((ct) => (
-            <option key={ct}>{ct}</option>
-          ))}
-        </select>
+  <option value="">City</option>
+  {country2 &&
+    Object.keys(sectorData2?.countries?.[country2]?.cities || {}).map((ct) => (
+      <option key={ct} value={ct}>{ct}</option>
+    ))}
+</select>
 
         <select value={submarket2} onChange={(e) => setSubmarket2(e.target.value)}>
           <option value="">Submarket</option>
@@ -845,25 +859,26 @@ if (startPeriod && endPeriod) {
 
       <div style={{ display: "flex", gap: "10px" }}>
         <select value={sector3} onChange={(e) => setSector3(e.target.value)}>
-          <option value="">Sector</option>
-          {Object.keys(raw?.sectors || {}).map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
+  <option value="">Sector</option>
+  {Object.keys(raw?.sectors || {}).map((s) => (
+    <option key={s} value={s}>{s}</option>
+  ))}
+</select>
 
         <select value={country3} onChange={(e) => setCountry3(e.target.value)}>
-          <option value="">Country</option>
-          {Object.keys(sectorData3?.countries || {}).map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
+  <option value="">Country</option>
+  {Object.keys(sectorData3?.countries || {}).map((c) => (
+    <option key={c} value={c}>{c}</option>
+  ))}
+</select>
 
         <select value={city3} onChange={(e) => setCity3(e.target.value)}>
-          <option value="">City</option>
-          {Object.keys(sectorData3?.countries[country3]?.cities || {}).map((ct) => (
-            <option key={ct}>{ct}</option>
-          ))}
-        </select>
+  <option value="">City</option>
+  {country3 &&
+  Object.keys(sectorData3?.countries?.[country3]?.cities || {}).map((ct) => (
+    <option key={ct} value={ct}>{ct}</option>
+  ))}
+</select>
 
         <select value={submarket3} onChange={(e) => setSubmarket3(e.target.value)}>
           <option value="">Submarket</option>
