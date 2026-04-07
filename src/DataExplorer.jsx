@@ -366,13 +366,21 @@ useEffect(() => {
 
   // === MARKET 2 ===
   if (showComp2 && sector2) {
-    if (!country2) {
-      const defaultCountry =
-  sectorData2?.countries?.["Austria"]
-    ? "Austria"
-    : Object.keys(sectorData2?.countries || {})[0];
-      setCountry2(defaultCountry);
-    } else {
+    if (!country2 && sector2) {
+  const c = "Austria";
+  const ci = "Vienna";
+
+  const periods2 =
+    sectorData2?.countries?.[c]?.cities?.[ci]?.periods || {};
+
+  const latest = Object.keys(periods2).slice(-1)[0];
+
+  setCountry2(c);
+  setCity2(ci);
+  setSubmarket2("Total");
+}
+    
+    else {
       if (!sectorData2?.countries[country2]) return;
 
       const cities2 = Object.keys(
@@ -400,12 +408,21 @@ useEffect(() => {
 
   // === MARKET 3 ===
   if (showComp3 && sector3) {
-    if (!country3) {
-      const defaultCountry = sectorData3?.countries["Austria"]
-  ? "Austria"
-  : Object.keys(sectorData3?.countries)[0];
-      setCountry3(defaultCountry);
-    } else {
+    if (!country3 && sector3) {
+  const c = "Austria";
+  const ci = "Vienna";
+
+  const periods3 =
+    sectorData3?.countries?.[c]?.cities?.[ci]?.periods || {};
+
+  const latest = Object.keys(periods3).slice(-1)[0];
+
+  setCountry3(c);
+  setCity3(ci);
+  setSubmarket3("Total");
+}
+    
+    else {
       if (!sectorData3?.countries[country3]) return;
 
       const cities3 = Object.keys(
