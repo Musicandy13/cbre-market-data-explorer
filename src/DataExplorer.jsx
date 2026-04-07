@@ -164,8 +164,8 @@ export default function DataExplorerApp() {
 
   // 🔑 zentrale Ableitung (NEU – ersetzt raw.countries überall)
 const sectorData = raw?.sectors?.[sector] || {};
-const sectorData2 = raw?.sectors?.[sector2 || sector] || {};
-const sectorData3 = raw?.sectors?.[sector3 || sector] || {}; 
+const sectorData2 = raw?.sectors?.[sector2] || {};
+const sectorData3 = raw?.sectors?.[sector3] || {};
 const countries = Object.keys(sectorData?.countries || {});
   
 const cities = country
@@ -354,16 +354,17 @@ useEffect(() => {
 
 // --- Default + cascading logic for comparison markets (safe version) ---
 useEffect(() => {
-  if (!sectorData?.countries) return;
+  if (!raw?.sectors) return;
 
   const countryList = Object.keys(sectorData.countries || {});
 
   // === MARKET 2 ===
-  if (showComp2) {
+  if (showComp2 && sector2) {
     if (!country2) {
-      const defaultCountry = sectorData2.countries["Austria"]
-  ? "Austria"
-  : Object.keys(sectorData2.countries)[0];
+      const defaultCountry =
+  sectorData2?.countries?.["Austria"]
+    ? "Austria"
+    : Object.keys(sectorData2?.countries || {})[0];
       setCountry2(defaultCountry);
     } else {
       if (!sectorData2.countries[country2]) return;
@@ -392,7 +393,7 @@ useEffect(() => {
   }
 
   // === MARKET 3 ===
-  if (showComp3) {
+  if (showComp3 && sector3) {
     if (!country3) {
       const defaultCountry = sectorData3.countries["Austria"]
   ? "Austria"
@@ -442,6 +443,40 @@ useEffect(() => {
     setEndPeriod(startPeriod);
   }
 }, [startPeriod, endPeriod]);
+
+  // --- Comparison RESET LOGIC ---
+
+// Market 2
+useEffect(() => {
+  setCountry2("");
+  setCity2("");
+  setSubmarket2("");
+}, [sector2]);
+
+useEffect(() => {
+  setCity2("");
+  setSubmarket2("");
+}, [country2]);
+
+useEffect(() => {
+  setSubmarket2("");
+}, [city2]);
+
+// Market 3
+useEffect(() => {
+  setCountry3("");
+  setCity3("");
+  setSubmarket3("");
+}, [sector3]);
+
+useEffect(() => {
+  setCity3("");
+  setSubmarket3("");
+}, [country3]);
+
+useEffect(() => {
+  setSubmarket3("");
+}, [city3]);
 
 
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
@@ -506,13 +541,14 @@ const leasingSource =
   /* === Build Chart Data === */
   const baseSeries = buildTrendSeries(raw, sector, country, city, submarket, selectedMetric);
   const comp2Series =
-    showComp2 && country2 && city2 && submarket2
-      ? buildTrendSeries(raw, sector2 || sector, country2, city2, submarket2, selectedMetric)
-      : [];
-  const comp3Series =
-    showComp3 && country3 && city3 && submarket3
-      ? buildTrendSeries(raw, sector3 || sector, country3, city3, submarket3, selectedMetric)
-      : [];
+  showComp2 && sector2 && country2 && city2 && submarket2
+    ? buildTrendSeries(raw, sector2, country2, city2, submarket2, selectedMetric)
+    : [];
+
+const comp3Series =
+  showComp3 && sector3 && country3 && city3 && submarket3
+    ? buildTrendSeries(raw, sector3, country3, city3, submarket3, selectedMetric)
+    : [];
 
   const periodsSet = Array.from(
     new Set([
@@ -731,7 +767,7 @@ if (startPeriod && endPeriod) {
 
 
   {/* === MARKET 2 === */}
-  
+
   {showComp2 && (
   <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
     
