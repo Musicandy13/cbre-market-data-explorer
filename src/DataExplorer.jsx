@@ -486,6 +486,22 @@ useEffect(() => {
   const submarketList = submarkets;
   const periodsAsc = periods;
   const periodsDesc = [...periodsAsc].reverse();
+  // === SAFE SUBMARKETS MARKET 2 ===
+const periodsObj2 =
+  sectorData2?.countries?.[country2]?.cities?.[city2]?.periods || {};
+
+const latestPeriod2 = Object.keys(periodsObj2).slice(-1)[0];
+
+const submarkets2 =
+  periodsObj2?.[latestPeriod2]?.subMarkets || {};
+
+  const periodsObj3 =
+  sectorData3?.countries?.[country3]?.cities?.[city3]?.periods || {};
+
+const latestPeriod3 = Object.keys(periodsObj3).slice(-1)[0];
+
+const submarkets3 =
+  periodsObj3?.[latestPeriod3]?.subMarkets || {};
   
 
   const metricSource =
@@ -838,26 +854,18 @@ if (startPeriod && endPeriod) {
       </select>
 
       {/* 4. SUBMARKET */}
-      <select
-        value={submarket2}
-        onChange={(e) => setSubmarket2(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Submarket</option>
-        {Object.keys(
-          sectorData2?.countries[country2]?.cities?.[city2]?.periods?.[
-            Object.keys(
-              sectorData2?.countries[country2]?.cities?.[city2]?.periods || {}
-            ).slice(-1)[0]
-          ]?.subMarkets || {}
-        ).map((sm) => (
-          <option key={sm}>{sm}</option>
-        ))}
-      </select>
 
-    </div>
-  </div>
-)}
+      <select
+  value={submarket2}
+  onChange={(e) => setSubmarket2(e.target.value)}
+  style={{ flex: 1, padding: "6px" }}
+>
+  <option value="">Submarket</option>
+
+  {Object.keys(submarkets2).map((sm) => (
+    <option key={sm}>{sm}</option>
+  ))}
+</select>
   
 {/* === MARKET 3 === */}
 
@@ -931,26 +939,18 @@ if (startPeriod && endPeriod) {
       </select>
 
       {/* 4. SUBMARKET */}
-      <select
-        value={submarket3}
-        onChange={(e) => setSubmarket3(e.target.value)}
-        style={{ flex: 1, padding: "6px" }}
-      >
-        <option value="">Submarket</option>
-        {Object.keys(
-          sectorData3?.countries[country3]?.cities?.[city3]?.periods?.[
-            Object.keys(
-              sectorData3?.countries[country3]?.cities?.[city3]?.periods || {}
-            ).slice(-1)[0]
-          ]?.subMarkets || {}
-        ).map((sm) => (
-          <option key={sm}>{sm}</option>
-        ))}
-      </select>
 
-    </div>
-  </div>
-)}
+      <select
+  value={submarket3}
+  onChange={(e) => setSubmarket3(e.target.value)}
+  style={{ flex: 1, padding: "6px" }}
+>
+  <option value="">Submarket</option>
+
+  {Object.keys(submarkets3).map((sm) => (
+    <option key={sm}>{sm}</option>
+  ))}
+</select>
 
 
   {/* === Add comparison buttons === */}
