@@ -150,7 +150,7 @@ function buildTrendSeries(raw, sector, country, city, submarket, metric) {
   };
 
   const out = [];
-  for (const p of periods.sort(sortPeriods)) {
+  for (const p of [...periods].sort(sortPeriods)) {
   const cityData = cityNode?.periods?.[p];
   if (!cityData) continue;
 
@@ -416,32 +416,6 @@ useEffect(() => {
 }, [showComp2, sector]);
   
 
-  // ===== FIX: RESET when market2.sector changes =====
-useEffect(() => {
-  if (!market2.sector) return;
-
-  const countries = Object.keys(market2.sectorData?.countries || {});
-  const c = countries[0] || "";
-
-  const cities = Object.keys(
-    market2.sectorData?.countries?.[c]?.cities || {}
-  );
-  const ci = cities[0] || "";
-
-  const periods = Object.keys(
-    market2.sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
-  );
-  const p = periods[periods.length - 1] || "";
-
-  const subs = Object.keys(
-    market2.sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
-  );
-
-  market2.setCountry(c);
-  market2.setCity(ci);
-  market2.setSubmarket(subs[0] || "");
-}, [market2.sector]);
-
 // ===== MARKET 3 =====
 
 useEffect(() => {
@@ -451,7 +425,8 @@ useEffect(() => {
  
 
   // ===== FIX: RESET when market3.sector changes =====
-useEffect(() => {
+
+  useEffect(() => {
   if (!market3.sector) return;
 
   const countries = Object.keys(market3.sectorData?.countries || {});
@@ -475,34 +450,40 @@ useEffect(() => {
   market3.setCity(ci);
   market3.setSubmarket(subs[0] || "");
 }, [market3.sector]);
-
+  
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
 
   
   const submarketList =
-  submarkets.length > 0 ? submarkets : ["All"];
-  const periodsAsc = periods;
+  submarkets.length > 0 ? submarkets : [];
+  const periodsAsc = [...(periods || [])].sort(comparePeriods);
   const periodsDesc = [...periodsAsc].reverse();
-  // === SAFE SUBMARKETS MARKET 2 ===
+ // === SAFE SUBMARKETS MARKET 2 ===
 const periodsObj2 =
   market2.country && market2.city
     ? (market2.sectorData?.countries?.[market2.country]?.cities?.[market2.city]?.periods || {})
     : {};
 
-const latestPeriod2 = Object.keys(periodsObj2).slice(-1)[0] || null;
+const latestPeriod2 = Object.keys(periodsObj2)
+  .sort(comparePeriods)
+  .slice(-1)[0] || null;
 
 const submarkets2 =
   latestPeriod2 && periodsObj2?.[latestPeriod2]?.subMarkets
     ? periodsObj2[latestPeriod2].subMarkets
     : { Total: {} };
 
-  const periodsObj3 =
+
+// === SAFE SUBMARKETS MARKET 3 ===
+const periodsObj3 =
   market3.country && market3.city
     ? (market3.sectorData?.countries?.[market3.country]?.cities?.[market3.city]?.periods || {})
     : {};
 
-const latestPeriod3 = Object.keys(periodsObj3).slice(-1)[0] || null;
+const latestPeriod3 = Object.keys(periodsObj3)
+  .sort(comparePeriods)
+  .slice(-1)[0] || null;
 
 const submarkets3 =
   latestPeriod3 && periodsObj3?.[latestPeriod3]?.subMarkets
@@ -567,9 +548,24 @@ return "–";
 
   /* === Build Chart Data === */
   const baseSeries = buildTrendSeries(raw, sector, country, city, submarket, selectedMetric);
-  const comp2Series =
-  showComp2 && market2.sector && market2.country && market2.city && market2.submarket
-    ? buildTrendSeries(raw, market2.sector, market2.country, market2.city, market2.submarket, selectedMetric)
+
+// ✅ NEW
+const isMarket2Ready =
+  market2.sector &&
+  market2.country &&
+  market2.city &&
+  market2.submarket;
+
+const comp2Series =
+  showComp2 && isMarket2Ready
+    ? buildTrendSeries(
+        raw,
+        market2.sector,
+        market2.country,
+        market2.city,
+        market2.submarket,
+        selectedMetric
+      )
     : [];
 
 const comp3Series =
