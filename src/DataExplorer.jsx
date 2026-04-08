@@ -358,106 +358,7 @@ useEffect(() => {
   if (!subs.includes(submarket)) setSubmarket(subs[0] || "");
 }, [city, country, sectorData]);
 
-// --- Default + cascading logic for comparison markets (safe version) ---
-useEffect(() => {
-  if (!raw?.sectors) return;
 
-  // === MARKET 2 ===
-  if (showComp2 && sector2) {
-    if (!country2 && !city2 && !submarket2) {
-  const c = "Austria";
-  const ci = "Vienna";
-
-  const periods2 =
-    sectorData2?.countries?.[c]?.cities?.[ci]?.periods || {};
-
-  const latest = Object.keys(periods2).slice(-1)[0];
-
-  setCountry2(c);
-  setCity2(ci);
-  setSubmarket2("Total");
-}
-    
-    else {
-      if (!sectorData2?.countries[country2]) return;
-
-      const cities2 = Object.keys(
-        sectorData2?.countries?.[country2]?.cities || {}
-      );
-
-      if (!city2 || !cities2.includes(city2)) {
-        setCity2(cities2[0] || "");
-      }
-
-      const periods2 = Object.keys(
-        sectorData2?.countries?.[country2]?.cities?.[city2]?.periods || {}
-      );
-      const latest2 = periods2[periods2.length - 1] || "";
-
-      const subs2 = Object.keys(
-  sectorData2?.countries?.[country2]?.cities?.[city2]?.periods?.[latest2]?.subMarkets || {}
-);
-
-      if (!submarket2 || !subs2.includes(submarket2)) {
-        setSubmarket2(subs2[0] || "");
-      }
-    }
-  }
-
-  // === MARKET 3 ===
-  if (showComp3 && sector3) {
-    if (!country3 && !city3 && !submarket3) {
-  const c = "Austria";
-  const ci = "Vienna";
-
-  const periods3 =
-    sectorData3?.countries?.[c]?.cities?.[ci]?.periods || {};
-
-  const latest = Object.keys(periods3).slice(-1)[0];
-
-  setCountry3(c);
-  setCity3(ci);
-  setSubmarket3("Total");
-}
-    
-    else {
-      if (!sectorData3?.countries[country3]) return;
-
-      const cities3 = Object.keys(
-        sectorData3?.countries[country3]?.cities || {}      );
-
-      if (!city3 || !cities3.includes(city3)) {
-        setCity3(cities3[0] || "");
-      }
-
-      const periods3 = Object.keys(
-        sectorData3?.countries[country3].cities[city3]?.periods || {}
-      );
-      const latest3 = periods3[periods3.length - 1] || "";
-
-      const subs3 = Object.keys(
-  sectorData3?.countries?.[country3]?.cities?.[city3]?.periods?.[latest3]?.subMarkets || {}
-);
-
-      if (!submarket3 || !subs3.includes(submarket3)) {
-        setSubmarket3(subs3[0] || "");
-      }
-    }
-  }
-}, [
-  sector,
-  sectorData,
-  showComp2,
-  showComp3,
-  sector2, 
-  sector3, 
-  country2,
-  city2,
-  submarket2,
-  country3,
-  city3,
-  submarket3,
-]);
 
 // --- Auto-adjust invalid period range (ensures End ≥ Start) ---
 useEffect(() => {
@@ -470,41 +371,28 @@ useEffect(() => {
   // --- Comparison RESET LOGIC ---
 
 // ===== MARKET 2 =====
-useEffect(() => {
-  setCountry2("");
-  setCity2("");
-  setSubmarket2("");
-}, [sector2]);
 
 useEffect(() => {
-  if (!country2) return;
-  setCity2("");
-  setSubmarket2("");
-}, [country2]);
+  if (!showComp2) return;
 
-useEffect(() => {
-  if (!city2) return;
-  setSubmarket2("");
-}, [city2]);
+  setSector2(sector);
+  setCountry2(country);
+  setCity2(city);
+  setSubmarket2(submarket);
 
+}, [showComp2]);
 
 // ===== MARKET 3 =====
-useEffect(() => {
-  setCountry3("");
-  setCity3("");
-  setSubmarket3("");
-}, [sector3]);
 
-useEffect(() => {
-  if (!country3) return;
-  setCity3("");
-  setSubmarket3("");
-}, [country3]);
+  useEffect(() => {
+  if (!showComp3) return;
 
-useEffect(() => {
-  if (!city3) return;
-  setSubmarket3("");
-}, [city3]);
+  setSector3(sector);
+  setCountry3(country);
+  setCity3(city);
+  setSubmarket3(submarket);
+
+}, [showComp3]);
 
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
@@ -912,22 +800,20 @@ if (startPeriod && endPeriod) {
 
   {/* === ✅ BUTTONS (RICHTIG PLATZIERT) === */}
   {!showComp2 && (
-    <button style={{ marginTop: "10px" }} onClick={() => {
-  setShowComp2(true);
-  setSector2("Office"); 
-}}>
-      + Add 2nd Market
-    </button>
-  )}
+    <button
+  style={{ marginTop: "10px" }}
+  onClick={() => setShowComp2(true)}
+>
+  + Add 2nd Market
+</button>
 
   {showComp2 && !showComp3 && (
-    <button style={{ marginTop: "10px" }} onClick={() => {
-  setShowComp3(true);
-  setSector3("Office");
-}}>
-      + Add 3rd Market
-    </button>
-  )}
+    <button
+  style={{ marginTop: "10px" }}
+  onClick={() => setShowComp3(true)}
+>
+  + Add 3rd Market
+</button>
 
 </div>
 {/* === END comparison block === */}
