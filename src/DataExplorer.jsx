@@ -125,7 +125,7 @@ function useSyncedMarket(raw, initialSector = "") {
     if (ci !== city) setCity(ci);
     if (sm !== submarket) setSubmarket(sm);
 
-  }, [sector, country, raw]);  
+  }, [sector, raw]); 
 
   return {
     sector, setSector,
