@@ -382,6 +382,32 @@ useEffect(() => {
 
 }, [showComp2]);
 
+  // ===== FIX: RESET when sector2 changes =====
+useEffect(() => {
+  if (!sector2) return;
+
+  const countries = Object.keys(sectorData2?.countries || {});
+  const c = countries[0] || "";
+
+  const cities = Object.keys(
+    sectorData2?.countries?.[c]?.cities || {}
+  );
+  const ci = cities[0] || "";
+
+  const periods = Object.keys(
+    sectorData2?.countries?.[c]?.cities?.[ci]?.periods || {}
+  );
+  const p = periods[periods.length - 1] || "";
+
+  const subs = Object.keys(
+    sectorData2?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+  );
+
+  setCountry2(c);
+  setCity2(ci);
+  setSubmarket2(subs[0] || "");
+}, [sector2]);
+
 // ===== MARKET 3 =====
 
   useEffect(() => {
@@ -393,6 +419,32 @@ useEffect(() => {
   setSubmarket3(submarket);
 
 }, [showComp3]);
+
+  // ===== FIX: RESET when sector3 changes =====
+useEffect(() => {
+  if (!sector3) return;
+
+  const countries = Object.keys(sectorData3?.countries || {});
+  const c = countries[0] || "";
+
+  const cities = Object.keys(
+    sectorData3?.countries?.[c]?.cities || {}
+  );
+  const ci = cities[0] || "";
+
+  const periods = Object.keys(
+    sectorData3?.countries?.[c]?.cities?.[ci]?.periods || {}
+  );
+  const p = periods[periods.length - 1] || "";
+
+  const subs = Object.keys(
+    sectorData3?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+  );
+
+  setCountry3(c);
+  setCity3(ci);
+  setSubmarket3(subs[0] || "");
+}, [sector3]);
 
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
