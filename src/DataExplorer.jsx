@@ -83,7 +83,7 @@ function comparePeriods(a, b) {
   return Number(qa.replace("Q", "")) - Number(qb.replace("Q", ""));
 }
 
-function useMarket(raw, initialSector = "") {
+function useSyncedMarket(raw, initialSector = "") {
   const [sector, setSector] = useState(initialSector);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -95,26 +95,32 @@ function useMarket(raw, initialSector = "") {
     if (!sector) return;
 
     const countries = Object.keys(sectorData?.countries || {});
-    const c = countries[0] || "";
+    const c = countries.includes(country) ? country : countries[0] || "";
 
     const cities = Object.keys(
       sectorData?.countries?.[c]?.cities || {}
     );
-    const ci = cities[0] || "";
+    const ci = cities.includes(city) ? city : cities[0] || "";
 
     const periods = Object.keys(
       sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
     );
-    const p = periods[periods.length - 1] || "";
 
+    const latest = periods.length
+  ? [...periods].sort(comparePeriods).slice(-1)[0]
+  : null;
+    
     const subs = Object.keys(
-      sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+      sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[latest]?.subMarkets || {}
     );
 
-    setCountry(c);
-    setCity(ci);
-    setSubmarket(subs[0] || "");
-  }, [sector, raw]);
+    const sm = subs.includes(submarket) ? submarket : subs[0] || "";
+
+    if (c !== country) setCountry(c);
+    if (ci !== city) setCity(ci);
+    if (sm !== submarket) setSubmarket(sm);
+
+  }, [sector, raw]);  
 
   return {
     sector, setSector,
@@ -296,8 +302,8 @@ const [endPeriod, setEndPeriod] = useState("");
 
 
     // Comparison controls
-  const market2 = useMarket(raw, sector);
-  const market3 = useMarket(raw, sector);
+  const market2 = useSyncedMarket(raw, sector);
+  const market3 = useSyncedMarket(raw, sector);
 
   useEffect(() => {
   fetch("/market_data.json")
@@ -410,53 +416,20 @@ useEffect(() => {
 
 // ===== MARKET 2 =====
   
-useEffect(() => {
-  if (!showComp2) return;
-  market2.setSector(sector);
-}, [showComp2, sector]);
-  
+
 
 // ===== MARKET 3 =====
 
-useEffect(() => {
-  if (!showComp3) return;
-  market3.setSector(sector);
-}, [showComp3, sector]);
- 
+
 
   // ===== FIX: RESET when market3.sector changes =====
-
-  useEffect(() => {
-  if (!market3.sector) return;
-
-  const countries = Object.keys(market3.sectorData?.countries || {});
-  const c = countries[0] || "";
-
-  const cities = Object.keys(
-    market3.sectorData?.countries?.[c]?.cities || {}
-  );
-  const ci = cities[0] || "";
-
-  const periods = Object.keys(
-    market3.sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
-  );
-  const p = periods[periods.length - 1] || "";
-
-  const subs = Object.keys(
-    market3.sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
-  );
-
-  market3.setCountry(c);
-  market3.setCity(ci);
-  market3.setSubmarket(subs[0] || "");
-}, [market3.sector]);
   
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
 
   
   const submarketList =
-  submarkets.length > 0 ? submarkets : [];
+  submarkets.length > 0 ? submarkets : ["Total"];
   const periodsAsc = [...(periods || [])].sort(comparePeriods);
   const periodsDesc = [...periodsAsc].reverse();
  // === SAFE SUBMARKETS MARKET 2 ===
