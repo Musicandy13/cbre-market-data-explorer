@@ -100,7 +100,12 @@ function useSyncedMarket(raw, initialSector = "") {
     const cities = Object.keys(
       sectorData?.countries?.[c]?.cities || {}
     );
-    const ci = cities.includes(city) ? city : cities[0] || "";
+    const ci =
+  cities.length === 1
+    ? cities[0]                     // 🔥 zwingend bei 1 Stadt
+    : cities.includes(city)
+    ? city
+    : cities[0] || "";
 
     const periods = Object.keys(
       sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
@@ -120,7 +125,7 @@ function useSyncedMarket(raw, initialSector = "") {
     if (ci !== city) setCity(ci);
     if (sm !== submarket) setSubmarket(sm);
 
-  }, [sector, raw]);  
+  }, [sector, country, raw]);  
 
   return {
     sector, setSector,
@@ -160,7 +165,8 @@ function buildTrendSeries(raw, sector, country, city, submarket, metric) {
   const cityData = cityNode?.periods?.[p];
   if (!cityData) continue;
 
-  const subData = submarket
+  const subData =
+  submarket && submarket !== "Total"
     ? (cityData?.subMarkets?.[submarket] || {})
     : {};
 
@@ -304,6 +310,18 @@ const [endPeriod, setEndPeriod] = useState("");
     // Comparison controls
   const market2 = useSyncedMarket(raw, sector);
   const market3 = useSyncedMarket(raw, sector);
+
+  useEffect(() => {
+  if (showComp2) {
+    market2.setSector(sector);
+  }
+}, [showComp2, sector]);
+
+useEffect(() => {
+  if (showComp3) {
+    market3.setSector(sector);
+  }
+}, [showComp3, sector]);
 
   useEffect(() => {
   fetch("/market_data.json")
