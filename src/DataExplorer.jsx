@@ -799,21 +799,23 @@ if (startPeriod && endPeriod) {
   )}
 
   {/* === ✅ BUTTONS (RICHTIG PLATZIERT) === */}
-  {!showComp2 && (
-    <button
-  style={{ marginTop: "10px" }}
-  onClick={() => setShowComp2(true)}
->
-  + Add 2nd Market
-</button>
+ {!showComp2 && (
+  <button
+    style={{ marginTop: "10px" }}
+    onClick={() => setShowComp2(true)}
+  >
+    + Add 2nd Market
+  </button>
+)}
 
-  {showComp2 && !showComp3 && (
-    <button
-  style={{ marginTop: "10px" }}
-  onClick={() => setShowComp3(true)}
->
-  + Add 3rd Market
-</button>
+{showComp2 && !showComp3 && (
+  <button
+    style={{ marginTop: "10px" }}
+    onClick={() => setShowComp3(true)}
+  >
+    + Add 3rd Market
+  </button>
+)}
 
 </div>
 {/* === END comparison block === */}
