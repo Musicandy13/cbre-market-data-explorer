@@ -72,6 +72,8 @@ function formatMaybeRange(v, kind = "number") {
   return v;
 }
 
+
+
 // === Helper for comparing periods chronologically (e.g. Q1 2020 < Q4 2020) ===
 function comparePeriods(a, b) {
   if (!a || !b) return 0;
@@ -79,6 +81,48 @@ function comparePeriods(a, b) {
   const [qb, yb] = b.split(" ");
   if (ya !== yb) return Number(ya) - Number(yb);
   return Number(qa.replace("Q", "")) - Number(qb.replace("Q", ""));
+}
+
+function useMarket(raw, initialSector = "") {
+  const [sector, setSector] = useState(initialSector);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [submarket, setSubmarket] = useState("");
+
+  const sectorData = raw?.sectors?.[sector] || {};
+
+  useEffect(() => {
+    if (!sector) return;
+
+    const countries = Object.keys(sectorData?.countries || {});
+    const c = countries[0] || "";
+
+    const cities = Object.keys(
+      sectorData?.countries?.[c]?.cities || {}
+    );
+    const ci = cities[0] || "";
+
+    const periods = Object.keys(
+      sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
+    );
+    const p = periods[periods.length - 1] || "";
+
+    const subs = Object.keys(
+      sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+    );
+
+    setCountry(c);
+    setCity(ci);
+    setSubmarket(subs[0] || "");
+  }, [sector, raw]);
+
+  return {
+    sector, setSector,
+    country, setCountry,
+    city, setCity,
+    submarket, setSubmarket,
+    sectorData
+  };
 }
 
 
@@ -155,6 +199,8 @@ const MultiTooltip = ({ active, payload, label }) => {
 
 /* ===== Main App ===== */
 export default function DataExplorerApp() {
+  const [showComp2, setShowComp2] = useState(false);
+  const [showComp3, setShowComp3] = useState(false);
   const [raw, setRaw] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -165,13 +211,11 @@ export default function DataExplorerApp() {
   const [period, setPeriod] = useState("");
   const [submarket, setSubmarket] = useState("");
   const [selectedMetric, setSelectedMetric] = useState("primeRentEurSqmMonth");
-  const [sector2, setSector2] = useState("");
-  const [sector3, setSector3] = useState("");
+ // löschen ohne Ersatz – diese States existieren NICHT mehr
 
   // 🔑 zentrale Ableitung (NEU – ersetzt raw.countries überall)
 const sectorData = raw?.sectors?.[sector] || {};
-const sectorData2 = raw?.sectors?.[sector2] || {};
-const sectorData3 = raw?.sectors?.[sector3] || {};
+// nichts einsetzen – kommt aus useMarket Hook
 const countries = Object.keys(sectorData?.countries || {});
   
 const cities = country
@@ -251,15 +295,9 @@ const [startPeriod, setStartPeriod] = useState("");
 const [endPeriod, setEndPeriod] = useState("");
 
 
-  // Comparison controls
-  const [showComp2, setShowComp2] = useState(false);
-  const [showComp3, setShowComp3] = useState(false);
-  const [country2, setCountry2] = useState("");
-  const [city2, setCity2] = useState("");
-  const [submarket2, setSubmarket2] = useState("");
-  const [country3, setCountry3] = useState("");
-  const [city3, setCity3] = useState("");
-  const [submarket3, setSubmarket3] = useState("");
+    // Comparison controls
+  const market2 = useMarket(raw, sector);
+  const market3 = useMarket(raw, sector);
 
   useEffect(() => {
   fetch("/market_data.json")
@@ -371,114 +409,106 @@ useEffect(() => {
   // --- Comparison RESET LOGIC ---
 
 // ===== MARKET 2 =====
-
+  
 useEffect(() => {
   if (!showComp2) return;
+  market2.setSector(sector);
+}, [showComp2, sector]);
+  
 
-  setSector2(sector);
-  setCountry2(country);
-  setCity2(city);
-  setSubmarket2(submarket);
-
-}, [showComp2]);
-
-  // ===== FIX: RESET when sector2 changes =====
+  // ===== FIX: RESET when market2.sector changes =====
 useEffect(() => {
-  if (!sector2) return;
+  if (!market2.sector) return;
 
-  const countries = Object.keys(sectorData2?.countries || {});
+  const countries = Object.keys(market2.sectorData?.countries || {});
   const c = countries[0] || "";
 
   const cities = Object.keys(
-    sectorData2?.countries?.[c]?.cities || {}
+    market2.sectorData?.countries?.[c]?.cities || {}
   );
   const ci = cities[0] || "";
 
   const periods = Object.keys(
-    sectorData2?.countries?.[c]?.cities?.[ci]?.periods || {}
+    market2.sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
   );
   const p = periods[periods.length - 1] || "";
 
   const subs = Object.keys(
-    sectorData2?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+    market2.sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
   );
 
-  setCountry2(c);
-  setCity2(ci);
-  setSubmarket2(subs[0] || "");
-}, [sector2]);
+  market2.setCountry(c);
+  market2.setCity(ci);
+  market2.setSubmarket(subs[0] || "");
+}, [market2.sector]);
 
 // ===== MARKET 3 =====
 
-  useEffect(() => {
-  if (!showComp3) return;
-
-  setSector3(sector);
-  setCountry3(country);
-  setCity3(city);
-  setSubmarket3(submarket);
-
-}, [showComp3]);
-
-  // ===== FIX: RESET when sector3 changes =====
 useEffect(() => {
-  if (!sector3) return;
+  if (!showComp3) return;
+  market3.setSector(sector);
+}, [showComp3, sector]);
+ 
 
-  const countries = Object.keys(sectorData3?.countries || {});
+  // ===== FIX: RESET when market3.sector changes =====
+useEffect(() => {
+  if (!market3.sector) return;
+
+  const countries = Object.keys(market3.sectorData?.countries || {});
   const c = countries[0] || "";
 
   const cities = Object.keys(
-    sectorData3?.countries?.[c]?.cities || {}
+    market3.sectorData?.countries?.[c]?.cities || {}
   );
   const ci = cities[0] || "";
 
   const periods = Object.keys(
-    sectorData3?.countries?.[c]?.cities?.[ci]?.periods || {}
+    market3.sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
   );
   const p = periods[periods.length - 1] || "";
 
   const subs = Object.keys(
-    sectorData3?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
+    market3.sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[p]?.subMarkets || {}
   );
 
-  setCountry3(c);
-  setCity3(ci);
-  setSubmarket3(subs[0] || "");
-}, [sector3]);
+  market3.setCountry(c);
+  market3.setCity(ci);
+  market3.setSubmarket(subs[0] || "");
+}, [market3.sector]);
 
   if (loading) return <div style={{ padding: 30 }}>Loading…</div>;
   if (error) return <div style={{ color: "crimson" }}>{error}</div>;
 
   
-  const submarketList = submarkets;
+  const submarketList =
+  submarkets.length > 0 ? submarkets : ["All"];
   const periodsAsc = periods;
   const periodsDesc = [...periodsAsc].reverse();
   // === SAFE SUBMARKETS MARKET 2 ===
 const periodsObj2 =
-  country2 && city2
-    ? (sectorData2?.countries?.[country2]?.cities?.[city2]?.periods || {})
+  market2.country && market2.city
+    ? (market2.sectorData?.countries?.[market2.country]?.cities?.[market2.city]?.periods || {})
     : {};
 
-const latestPeriod2 = Object.keys(periodsObj2).slice(-1)[0];
+const latestPeriod2 = Object.keys(periodsObj2).slice(-1)[0] || null;
 
 const submarkets2 =
   latestPeriod2 && periodsObj2?.[latestPeriod2]?.subMarkets
     ? periodsObj2[latestPeriod2].subMarkets
-    : {};
+    : { Total: {} };
 
   const periodsObj3 =
-  country3 && city3
-    ? (sectorData3?.countries?.[country3]?.cities?.[city3]?.periods || {})
+  market3.country && market3.city
+    ? (market3.sectorData?.countries?.[market3.country]?.cities?.[market3.city]?.periods || {})
     : {};
 
-const latestPeriod3 = Object.keys(periodsObj3).slice(-1)[0];
+const latestPeriod3 = Object.keys(periodsObj3).slice(-1)[0] || null;
 
 const submarkets3 =
   latestPeriod3 && periodsObj3?.[latestPeriod3]?.subMarkets
     ? periodsObj3[latestPeriod3].subMarkets
-    : {};
-  
-
+    : { Total: {} };
+   
   const metricSource =
   sectorData?.countries?.[country]?.cities?.[city]?.periods?.[period]?.subMarkets?.[
     submarket
@@ -511,7 +541,13 @@ const leasingSource =
   }
 
   // === DEFAULT ===
-  return metricSource[key] ?? leasingSource[key] ?? "–";
+  const sub = coerceNumber(metricSource[key]);
+if (sub != null) return sub;
+
+const total = coerceNumber(leasingSource[key]);
+if (total != null) return total;
+
+return "–";
 };
 
 
@@ -532,13 +568,13 @@ const leasingSource =
   /* === Build Chart Data === */
   const baseSeries = buildTrendSeries(raw, sector, country, city, submarket, selectedMetric);
   const comp2Series =
-  showComp2 && sector2 && country2 && city2 && submarket2
-    ? buildTrendSeries(raw, sector2, country2, city2, submarket2, selectedMetric)
+  showComp2 && market2.sector && market2.country && market2.city && market2.submarket
+    ? buildTrendSeries(raw, market2.sector, market2.country, market2.city, market2.submarket, selectedMetric)
     : [];
 
 const comp3Series =
-  showComp3 && sector3 && country3 && city3 && submarket3
-    ? buildTrendSeries(raw, sector3, country3, city3, submarket3, selectedMetric)
+  showComp3 && market3.sector && market3.country && market3.city && market3.submarket
+    ? buildTrendSeries(raw, market3.sector, market3.country, market3.city, market3.submarket, selectedMetric)
     : [];
 
   const periodsSet = Array.from(
@@ -564,11 +600,16 @@ let mergedData = periodsSet.map((p) => ({
 
 // Filter by selected period range
 if (startPeriod && endPeriod) {
-  mergedData = mergedData.filter(
+  const filtered = mergedData.filter(
     (d) =>
       comparePeriods(d.period, startPeriod) >= 0 &&
       comparePeriods(d.period, endPeriod) <= 0
   );
+
+  // 🔥 fallback: wenn leer → nicht filtern
+  if (filtered.length > 0) {
+    mergedData = filtered;
+  }
 }
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
@@ -763,37 +804,37 @@ if (startPeriod && endPeriod) {
         <strong>Market 2:</strong>
         <button onClick={() => {
           setShowComp2(false);
-          setCountry2("");
-          setCity2("");
-          setSubmarket2("");
+          market2.setCountry("");
+          market2.setCity("");
+          market2.setSubmarket("");
         }}>
           ✖ Remove
         </button>
       </div>
 
       <div style={{ display: "flex", gap: "10px" }}>
-        <select value={sector2} onChange={(e) => setSector2(e.target.value)}>
+        <select value={market2.sector} onChange={(e) => market2.setSector(e.target.value)}>
   {Object.keys(raw?.sectors || {}).map((s) => (
     <option key={s} value={s}>{s}</option>
   ))}
 </select>
 
-        <select value={country2} onChange={(e) => setCountry2(e.target.value)}>
+        <select value={market2.country} onChange={(e) => market2.setCountry(e.target.value)}>
   
-  {Object.keys(sectorData2?.countries || {}).map((c) => (
+  {Object.keys(market2.sectorData?.countries || {}).map((c) => (
     <option key={c} value={c}>{c}</option>
   ))}
 </select>
 
-        <select value={city2} onChange={(e) => setCity2(e.target.value)}>
+        <select value={market2.city} onChange={(e) => market2.setCity(e.target.value)}>
   
-  {country2 &&
-    Object.keys(sectorData2?.countries?.[country2]?.cities || {}).map((ct) => (
+  {market2.country &&
+    Object.keys(market2.sectorData?.countries?.[market2.country]?.cities || {}).map((ct) => (
       <option key={ct} value={ct}>{ct}</option>
     ))}
 </select>
 
-        <select value={submarket2} onChange={(e) => setSubmarket2(e.target.value)}>
+        <select value={market2.submarket} onChange={(e) => market2.setSubmarket(e.target.value)}>
           
           {Object.keys(submarkets2).map((sm) => (
             <option key={sm}>{sm}</option>
@@ -810,37 +851,37 @@ if (startPeriod && endPeriod) {
         <strong>Market 3:</strong>
         <button onClick={() => {
           setShowComp3(false);
-          setCountry3("");
-          setCity3("");
-          setSubmarket3("");
+          market3.setCountry("");
+          market3.setCity("");
+          market3.setSubmarket("");
         }}>
           ✖ Remove
         </button>
       </div>
 
       <div style={{ display: "flex", gap: "10px" }}>
-        <select value={sector3} onChange={(e) => setSector3(e.target.value)}>
+        <select value={market3.sector} onChange={(e) => market3.setSector(e.target.value)}>
   {Object.keys(raw?.sectors || {}).map((s) => (
     <option key={s} value={s}>{s}</option>
   ))}
 </select>
 
-        <select value={country3} onChange={(e) => setCountry3(e.target.value)}>
+        <select value={market3.country} onChange={(e) => market3.setCountry(e.target.value)}>
   
-  {Object.keys(sectorData3?.countries || {}).map((c) => (
+  {Object.keys(market3.sectorData?.countries || {}).map((c) => (
     <option key={c} value={c}>{c}</option>
   ))}
 </select>
 
-        <select value={city3} onChange={(e) => setCity3(e.target.value)}>
+        <select value={market3.city} onChange={(e) => market3.setCity(e.target.value)}>
   
-  {country3 &&
-  Object.keys(sectorData3?.countries?.[country3]?.cities || {}).map((ct) => (
+  {market3.country &&
+  Object.keys(market3.sectorData?.countries?.[market3.country]?.cities || {}).map((ct) => (
     <option key={ct} value={ct}>{ct}</option>
   ))}
 </select>
 
-        <select value={submarket3} onChange={(e) => setSubmarket3(e.target.value)}>
+        <select value={market3.submarket} onChange={(e) => market3.setSubmarket(e.target.value)}>
         
           {Object.keys(submarkets3).map((sm) => (
             <option key={sm}>{sm}</option>
