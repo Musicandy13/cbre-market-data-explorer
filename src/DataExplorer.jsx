@@ -850,7 +850,7 @@ if (startPeriod && endPeriod) {
           ))}
         </select>
       </div>
-     
+     </div>
 {/* === MARKET 3 === */}
   {showComp3 && (
     <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
