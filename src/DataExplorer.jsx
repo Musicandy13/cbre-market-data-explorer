@@ -83,37 +83,46 @@ function comparePeriods(a, b) {
   return Number(qa.replace("Q", "")) - Number(qb.replace("Q", ""));
 }
 
-function useSyncedMarket(raw, initialSector = "") {
-  const [sector, setSector] = useState(initialSector);
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [submarket, setSubmarket] = useState("");
+useEffect(() => {
+    if (!raw || !sector) return;
 
-  const sectorData = raw?.sectors?.[sector] || {};
-
-  useEffect(() => {
-    if (!sector) return;
-
+    // 1. Länder validieren & setzen
     const countries = Object.keys(sectorData?.countries || {});
-    const c = countries.includes(country) ? country : countries[0] || "";
+    if (countries.length === 0) return;
 
-    const cities = Object.keys(
-      sectorData?.countries?.[c]?.cities || {}
-    );
-    const ci =
-  cities.length === 1
-    ? cities[0]                     // 🔥 zwingend bei 1 Stadt
-    : cities.includes(city)
-    ? city
-    : cities[0] || "";
+    let nextCountry = country;
+    if (!country || !countries.includes(country)) {
+      nextCountry = countries[0];
+      setCountry(nextCountry);
+    }
 
-    const periods = Object.keys(
-      sectorData?.countries?.[c]?.cities?.[ci]?.periods || {}
-    );
+    // 2. Städte validieren & setzen
+    const citiesNode = sectorData?.countries?.[nextCountry]?.cities || {};
+    const cities = Object.keys(citiesNode);
+    
+    // Falls Stadt leer ist, nicht im Land existiert oder nur eine Stadt verfügbar ist: nimm die erste.
+    if (!city || !cities.includes(city) || cities.length === 1) {
+      const targetCity = cities[0] || "";
+      if (city !== targetCity) {
+        setCity(targetCity);
+      }
+    }
 
-    const latest = periods.length
-  ? [...periods].sort(comparePeriods).slice(-1)[0]
-  : null;
+    // 3. Submarkets validieren
+    const currentCity = city || cities[0];
+    const periods = Object.keys(citiesNode[currentCity]?.periods || {});
+    const latest = periods.length ? [...periods].sort(comparePeriods).slice(-1)[0] : null;
+    
+    const subs = latest 
+      ? Object.keys(citiesNode[currentCity]?.periods?.[latest]?.subMarkets || {})
+      : [];
+
+    if (!submarket || !subs.includes(submarket)) {
+      setSubmarket(subs[0] || "Total");
+    }
+
+    // WICHTIG: country und city müssen hier in die Abhängigkeiten!
+  }, [sector, raw, country, city]);
     
     const subs = Object.keys(
       sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[latest]?.subMarkets || {}
@@ -311,17 +320,29 @@ const [endPeriod, setEndPeriod] = useState("");
   const market2 = useSyncedMarket(raw, sector);
   const market3 = useSyncedMarket(raw, sector);
 
+  // Trigger für Market 2 Initialisierung
   useEffect(() => {
-  if (showComp2) {
-    market2.setSector(sector);
-  }
-}, [showComp2, sector]);
+    if (showComp2 && raw && !market2.country) {
+      const s = market2.sector || sector || Object.keys(raw.sectors)[0];
+      const firstCountry = Object.keys(raw.sectors[s]?.countries || {})[0];
+      if (firstCountry) {
+        market2.setSector(s);
+        market2.setCountry(firstCountry);
+      }
+    }
+  }, [showComp2, raw]);
 
-useEffect(() => {
-  if (showComp3) {
-    market3.setSector(sector);
-  }
-}, [showComp3, sector]);
+  // Trigger für Market 3 Initialisierung
+  useEffect(() => {
+    if (showComp3 && raw && !market3.country) {
+      const s = market3.sector || sector || Object.keys(raw.sectors)[0];
+      const firstCountry = Object.keys(raw.sectors[s]?.countries || {})[0];
+      if (firstCountry) {
+        market3.setSector(s);
+        market3.setCountry(firstCountry);
+      }
+    }
+  }, [showComp3, raw]);
 
   useEffect(() => {
   fetch("/market_data.json")
@@ -801,37 +822,36 @@ if (startPeriod && endPeriod) {
 
       <div style={{ display: "flex", gap: "10px" }}>
         <select value={market2.sector} onChange={(e) => market2.setSector(e.target.value)}>
-  {Object.keys(raw?.sectors || {}).map((s) => (
-    <option key={s} value={s}>{s}</option>
-  ))}
-</select>
+          {Object.keys(raw?.sectors || {}).map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
 
         <select value={market2.country} onChange={(e) => market2.setCountry(e.target.value)}>
-  
-  {Object.keys(market2.sectorData?.countries || {}).map((c) => (
-    <option key={c} value={c}>{c}</option>
-  ))}
-</select>
+          {Object.keys(market2.sectorData?.countries || {}).length === 0 && <option value="">Loading...</option>}
+          {Object.keys(market2.sectorData?.countries || {}).map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
 
         <select value={market2.city} onChange={(e) => market2.setCity(e.target.value)}>
-  
-  {market2.country &&
-    Object.keys(market2.sectorData?.countries?.[market2.country]?.cities || {}).map((ct) => (
-      <option key={ct} value={ct}>{ct}</option>
-    ))}
-</select>
+          {(!market2.country || Object.keys(market2.sectorData?.countries?.[market2.country]?.cities || {}).length === 0) && (
+            <option value="">Select City</option>
+          )}
+          {market2.country &&
+            Object.keys(market2.sectorData?.countries?.[market2.country]?.cities || {}).map((ct) => (
+              <option key={ct} value={ct}>{ct}</option>
+            ))}
+        </select>
 
         <select value={market2.submarket} onChange={(e) => market2.setSubmarket(e.target.value)}>
-          
           {Object.keys(submarkets2).map((sm) => (
-            <option key={sm}>{sm}</option>
+            <option key={sm} value={sm}>{sm}</option>
           ))}
         </select>
       </div>
-    </div>
-  )}
-
-  {/* === MARKET 3 === */}
+      </div>
+{/* === MARKET 3 === */}
   {showComp3 && (
     <div style={{ marginTop: "10px", borderTop: "1px solid #ddd", paddingTop: "10px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
@@ -847,31 +867,36 @@ if (startPeriod && endPeriod) {
       </div>
 
       <div style={{ display: "flex", gap: "10px" }}>
+        {/* Sektor Market 3 */}
         <select value={market3.sector} onChange={(e) => market3.setSector(e.target.value)}>
-  {Object.keys(raw?.sectors || {}).map((s) => (
-    <option key={s} value={s}>{s}</option>
-  ))}
-</select>
+          {Object.keys(raw?.sectors || {}).map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
 
+        {/* Land Market 3 */}
         <select value={market3.country} onChange={(e) => market3.setCountry(e.target.value)}>
-  
-  {Object.keys(market3.sectorData?.countries || {}).map((c) => (
-    <option key={c} value={c}>{c}</option>
-  ))}
-</select>
+          {Object.keys(market3.sectorData?.countries || {}).length === 0 && <option value="">Loading...</option>}
+          {Object.keys(market3.sectorData?.countries || {}).map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
 
+        {/* Stadt Market 3 */}
         <select value={market3.city} onChange={(e) => market3.setCity(e.target.value)}>
-  
-  {market3.country &&
-  Object.keys(market3.sectorData?.countries?.[market3.country]?.cities || {}).map((ct) => (
-    <option key={ct} value={ct}>{ct}</option>
-  ))}
-</select>
+          {(!market3.country || Object.keys(market3.sectorData?.countries?.[market3.country]?.cities || {}).length === 0) && (
+            <option value="">Select City</option>
+          )}
+          {market3.country &&
+            Object.keys(market3.sectorData?.countries?.[market3.country]?.cities || {}).map((ct) => (
+              <option key={ct} value={ct}>{ct}</option>
+            ))}
+        </select>
 
+        {/* Submarket Market 3 */}
         <select value={market3.submarket} onChange={(e) => market3.setSubmarket(e.target.value)}>
-        
           {Object.keys(submarkets3).map((sm) => (
-            <option key={sm}>{sm}</option>
+            <option key={sm} value={sm}>{sm}</option>
           ))}
         </select>
       </div>
