@@ -177,7 +177,11 @@ function buildTrendSeries(raw, sector, country, city, submarket, metric) {
 
   const leasing = cityData?.leasing || {};
 
-  const merged = { ...(leasing || {}), ...(subData || {}) };
+  const merged = {
+  ...(cityData || {}),     // 🔥 DAS FEHLT
+  ...(leasing || {}),
+  ...(subData || {}),
+};
 
   const val = coerceNumber(merged?.[metric]);
   if (val !== null) out.push({ period: p, value: val });
