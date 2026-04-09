@@ -83,58 +83,7 @@ function comparePeriods(a, b) {
   return Number(qa.replace("Q", "")) - Number(qb.replace("Q", ""));
 }
 
-useEffect(() => {
-    if (!raw || !sector) return;
 
-    // 1. Länder validieren & setzen
-    const countries = Object.keys(sectorData?.countries || {});
-    if (countries.length === 0) return;
-
-    let nextCountry = country;
-    if (!country || !countries.includes(country)) {
-      nextCountry = countries[0];
-      setCountry(nextCountry);
-    }
-
-    // 2. Städte validieren & setzen
-    const citiesNode = sectorData?.countries?.[nextCountry]?.cities || {};
-    const cities = Object.keys(citiesNode);
-    
-    // Falls Stadt leer ist, nicht im Land existiert oder nur eine Stadt verfügbar ist: nimm die erste.
-    if (!city || !cities.includes(city) || cities.length === 1) {
-      const targetCity = cities[0] || "";
-      if (city !== targetCity) {
-        setCity(targetCity);
-      }
-    }
-
-    // 3. Submarkets validieren
-    const currentCity = city || cities[0];
-    const periods = Object.keys(citiesNode[currentCity]?.periods || {});
-    const latest = periods.length ? [...periods].sort(comparePeriods).slice(-1)[0] : null;
-    
-    const subs = latest 
-      ? Object.keys(citiesNode[currentCity]?.periods?.[latest]?.subMarkets || {})
-      : [];
-
-    if (!submarket || !subs.includes(submarket)) {
-      setSubmarket(subs[0] || "Total");
-    }
-
-    // WICHTIG: country und city müssen hier in die Abhängigkeiten!
-  }, [sector, raw, country, city]);
-    
-    const subs = Object.keys(
-      sectorData?.countries?.[c]?.cities?.[ci]?.periods?.[latest]?.subMarkets || {}
-    );
-
-    const sm = subs.includes(submarket) ? submarket : subs[0] || "";
-
-    if (c !== country) setCountry(c);
-    if (ci !== city) setCity(ci);
-    if (sm !== submarket) setSubmarket(sm);
-
-  }, [sector, raw]); 
 
   return {
     sector, setSector,
