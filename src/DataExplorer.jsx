@@ -171,7 +171,7 @@ function buildTrendSeries(raw, sector, country, city, submarket, metric) {
   if (!cityData) continue;
 
   const subData =
-  submarket && submarket !== "Total"
+  submarket
     ? (cityData?.subMarkets?.[submarket] || {})
     : {};
 
