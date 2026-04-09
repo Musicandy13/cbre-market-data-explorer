@@ -83,8 +83,55 @@ function comparePeriods(a, b) {
   return Number(qa.replace("Q", "")) - Number(qb.replace("Q", ""));
 }
 
+function useSyncedMarket(raw, initialSector) {
+  const [sector, setSector] = useState(initialSector || "");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [submarket, setSubmarket] = useState("");
 
+  const sectorData = raw?.sectors?.[sector] || {};
 
+  useEffect(() => {
+    if (!raw || !sector) return;
+
+    const countries = Object.keys(sectorData?.countries || {});
+    if (!countries.length) return;
+
+    if (!country || !countries.includes(country)) {
+      setCountry(countries[0]);
+    }
+  }, [sector, raw, sectorData]);
+
+  useEffect(() => {
+    if (!country || !sectorData?.countries?.[country]) return;
+
+    const cities = Object.keys(sectorData.countries[country].cities || {});
+    if (!city || !cities.includes(city)) {
+      setCity(cities[0] || "");
+    }
+  }, [country, sectorData]);
+
+  useEffect(() => {
+    if (!city || !sectorData?.countries?.[country]?.cities?.[city]) return;
+
+    const periods = Object.keys(
+      sectorData.countries[country].cities[city]?.periods || {}
+    );
+
+    const latest = [...periods].sort(comparePeriods).slice(-1)[0];
+
+    const subs = latest
+      ? Object.keys(
+          sectorData.countries[country].cities[city].periods[latest]?.subMarkets || {}
+        )
+      : [];
+
+    if (!submarket || !subs.includes(submarket)) {
+      setSubmarket(subs[0] || "Total");
+    }
+  }, [city, country, sectorData]);
+
+ 
   return {
     sector, setSector,
     country, setCountry,
@@ -317,9 +364,10 @@ const [endPeriod, setEndPeriod] = useState("");
 
       // 🔹 4. Period
       const pList = Object.keys(
-        data[s]?.countries?.[c]?.cities?.[ci]?.periods || {}
-      );
-      const p = pList[pList.length - 1];
+  data[s]?.countries?.[c]?.cities?.[ci]?.periods || {}
+).sort(comparePeriods);
+
+const p = pList[pList.length - 1];
 
       // 🔹 5. Submarket
       const sm = Object.keys(
