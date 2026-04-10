@@ -1,4 +1,12 @@
 // src/DataExplorer.jsx
+import {
+  fmtNumber,
+  fmtMoney,
+  fmtPercent,
+  coerceNumber,
+  formatMaybeRange
+} from "./utils/format";
+
 import React, { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
