@@ -293,6 +293,7 @@ const renderBarWithLabels = (key, color, scaleBoost = 1) => (
             x={cx}
             y={cy}
             textAnchor="middle"
+            dominantBaseline="middle"
             transform={`rotate(-90, ${cx}, ${cy})`}
             fill="#fff"
             fontSize={fontSize}
